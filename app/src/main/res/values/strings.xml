@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Geo Flag Quiz</string>
+
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="button.flag1">Flag 1</string>
+    <string name="button.flag2">Flag 2</string>
+    <string name="button.flag3">Flag 3</string>
+    <string name="button.flag4">Flag 4</string>
+
+    <string name="flag.andorra">Andorra</string>
+    <string name="flag.uae">United Arab Emirates</string>
+    <string name="flag.afghanistan">Afghanistan</string>
+    <string name="flag.antigua">Antigua and Barbuda</string>
+    <string name="flag.albania">Albania</string>
+</resources>
