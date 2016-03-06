@@ -9,10 +9,27 @@
     <string name="button.flag3">Flag 3</string>
     <string name="button.flag4">Flag 4</string>
 
-    <string name="flag.andorra">Andorra</string>
-    <string name="flag.uae">United Arab Emirates</string>
-    <string name="flag.afghanistan">Afghanistan</string>
-    <string name="flag.antigua">Antigua and Barbuda</string>
-    <string name="flag.albania">Albania</string>
-    <string name="flag.armenia">Armenia</string>
+    <!-- Flags -->
+    <string name="afghanistan">Afghanistan</string>
+    <string name="albania">Albania</string>
+    <string name="algeria">Algeria</string>
+    <string name="andorra">Andorra</string>
+    <string name="antigua">Antigua and Barbuda</string>
+    <string name="armenia">Armenia</string>
+    <string name="australia">Australia</string>
+    <string name="angola">Angola</string>
+    <string name="argentina">Argentina</string>
+    <string name="austria">Austria</string>
+    <string name="azerbaijan">Azerbaijan</string>
+
+    <string name="bahamas">The Bahamas</string>
+    <string name="bahrain">Bahrain</string>
+
+    <string name="uganda">Uganda</string>
+    <string name="ukraine">Ukraine</string>
+    <string name="uae">United Arab Emirates</string>
+    <string name="uk">The United Kingdom</string>
+    <string name="usa">The United States</string>
+    <string name="uruguay">Uruguay</string>
+    <string name="uzbekistan">Uzbekistan</string>
 </resources>
