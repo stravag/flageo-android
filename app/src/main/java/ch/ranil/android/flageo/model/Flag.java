@@ -5,13 +5,14 @@ import ch.ranil.android.flageo.R;
 /**
  * @author ranil wijeyratne
  */
-public enum Flag {
+public enum Flag implements Quizable {
 
     ANDORRA(R.drawable.ad, R.string.flag_andorra, 3, "Andorra"),
     UAE(R.drawable.ae, R.string.flag_uae, 3, "United Arab Emirates"),
     AFGHANISTAN(R.drawable.af, R.string.flag_afghanistan, 3, "Afghanistan"),
     ANTIGUA(R.drawable.ag, R.string.flag_antigua, 3, "Antigua and Barbuda"),
-    ALBANIA(R.drawable.al, R.string.flag_antigua, 3, "Albania"),
+    ALBANIA(R.drawable.al, R.string.flag_albania, 3, "Albania"),
+    ARMENIA(R.drawable.am, R.string.flag_armenia, 3, "Armenia")
     ;
 
     private int drawable;
