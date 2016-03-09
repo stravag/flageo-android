@@ -4,11 +4,6 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
-    <string name="button.flag1">Flag 1</string>
-    <string name="button.flag2">Flag 2</string>
-    <string name="button.flag3">Flag 3</string>
-    <string name="button.flag4">Flag 4</string>
-
     <!-- Flags -->
     <string name="afghanistan">Afghanistan</string>
     <string name="albania">Albania</string>
