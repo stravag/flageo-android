@@ -5,74 +5,18 @@
     android:layout_height="match_parent"
     tools:context="ch.ranil.android.flageo.MainActivity">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@android:style/Widget.Material.ProgressBar.Horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/txv_flagAsked"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </FrameLayout>
 
-        <GridLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
-
-            <ImageButton
-                android:id="@+id/btn_flag1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_columnWeight="1"
-                android:layout_row="0"
-                style="@style/FlagButton"
-                android:src="@drawable/ad"
-                android:contentDescription="@string/button.flag1" />
-
-            <ImageButton
-                android:id="@+id/btn_flag2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_row="0"
-                style="@style/FlagButton"
-                android:src="@drawable/fi"
-                android:contentDescription="@string/button.flag2" />
-
-            <ImageButton
-                android:id="@+id/btn_flag3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_row="1"
-                style="@style/FlagButton"
-                android:src="@drawable/gb"
-                android:contentDescription="@string/button.flag3" />
-
-            <ImageButton
-                android:id="@+id/btn_flag4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_row="1"
-                style="@style/FlagButton"
-                android:src="@drawable/pa"
-                android:contentDescription="@string/button.flag4" />
-        </GridLayout>
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="@android:style/Widget.ProgressBar.Horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            />
-
-    </LinearLayout>
 </FrameLayout>
