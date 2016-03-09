@@ -27,7 +27,7 @@ public class Name2FlagQuizFragment extends Fragment {
 
     private static final String PARAM_NUMBER_OF_CHOICES = "numberOfChoices";
 
-    @Bind(R.id.txv_flagAsked)
+    @Bind(R.id.txt_flagAsked)
     TextView flagAsked;
 
     private int numberOfChoices = 4;

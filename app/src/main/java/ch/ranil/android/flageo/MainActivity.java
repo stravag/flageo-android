@@ -10,14 +10,17 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.ranil.android.flageo.fragment.Name2FlagQuizFragment;
+import ch.ranil.android.flageo.fragment.QuizResultFragment;
 
 public class MainActivity extends AppCompatActivity implements Name2FlagQuizFragment.QuizAnswerListener {
 
-    private static final long TIMER = 10000; // 10s
-    private static final long TIMER_INTERVAL = 10; // 10ms
+    private static final long TIMER = 15000; // 10s
+    private static final long TIMER_INTERVAL = 5; // 5ms
 
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
+
+    private int score = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,16 @@ public class MainActivity extends AppCompatActivity implements Name2FlagQuizFrag
         transaction.commit();
     }
 
+    private void showResult() {
+        QuizResultFragment resultFragment = QuizResultFragment.newInstance(score);
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentContainer, resultFragment);
+        transaction.addToBackStack(null);
+
+        transaction.commit();
+    }
+
     private void initializeCountdown() {
         progressBar.setMax((int) (TIMER / TIMER_INTERVAL));
         CountDownTimer timer = new CountDownTimer(TIMER, TIMER_INTERVAL) {
@@ -54,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements Name2FlagQuizFrag
             @Override
             public void onFinish() {
                 Toast.makeText(getBaseContext(), "Finished", Toast.LENGTH_SHORT).show();
+                showResult();
             }
         };
         timer.start();
@@ -61,10 +75,12 @@ public class MainActivity extends AppCompatActivity implements Name2FlagQuizFrag
 
     @Override
     public void quizAnswered(boolean correct) {
-        if (correct)
+        if (correct) {
             Toast.makeText(this, "Correct 8)", Toast.LENGTH_SHORT).show();
-        else
+            score++;
+        } else {
             Toast.makeText(this, "Wrong dummy :#", Toast.LENGTH_SHORT).show();
+        }
 
         loadQuiz();
     }

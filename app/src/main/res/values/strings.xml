@@ -32,4 +32,7 @@
     <string name="usa">The United States</string>
     <string name="uruguay">Uruguay</string>
     <string name="uzbekistan">Uzbekistan</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="score">You scored %d points.</string>
 </resources>
