@@ -4,15 +4,19 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ch.ranil.android.flageo.fragment.Name2FlagQuizFragment;
 import ch.ranil.android.flageo.fragment.QuizResultFragment;
 
 public class MainActivity extends AppCompatActivity implements Name2FlagQuizFragment.QuizAnswerListener {
+
+    private static final String TAG = "MainActivity";
 
     private static final long TIMER = 15000; // 10s
     private static final long TIMER_INTERVAL = 5; // 5ms
@@ -54,18 +58,19 @@ public class MainActivity extends AppCompatActivity implements Name2FlagQuizFrag
     }
 
     private void initializeCountdown() {
-        progressBar.setMax((int) (TIMER / TIMER_INTERVAL));
-        CountDownTimer timer = new CountDownTimer(TIMER, TIMER_INTERVAL) {
-
-            int i = 0;
+        progressBar.setMax(100);
+        progressBar.setProgress(0);
+        CountDownTimer timer = new CountDownTimer(10000, 1) {
 
             @Override
             public void onTick(long millisUntilFinished) {
-                progressBar.setProgress(i++);
+                int progress = (int) (100 - (millisUntilFinished / 100));
+                progressBar.setProgress(progress);
             }
 
             @Override
             public void onFinish() {
+                progressBar.setProgress(500);
                 Toast.makeText(getBaseContext(), "Finished", Toast.LENGTH_SHORT).show();
                 showResult();
             }
@@ -83,5 +88,10 @@ public class MainActivity extends AppCompatActivity implements Name2FlagQuizFrag
         }
 
         loadQuiz();
+    }
+
+    @OnClick(R.id.restart)
+    public void restartQuiz() {
+        recreate();
     }
 }
