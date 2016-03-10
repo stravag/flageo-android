@@ -12,9 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
@@ -30,12 +32,14 @@ import ch.ranil.android.flageo.model.Flag;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link QuizAnswerListener} interface
+ * {@link QuizListener} interface
  * to handle interaction events.
  */
 public class Flag2MapQuizFragment extends Fragment {
 
     private static final String TAG = "Flag2MapQuizFragment";
+
+    private static final String PARAM_CAMERA_POSITION = "cameraPosition";
 
     @Bind(R.id.txt_flagAsked)
     ImageView flagView;
@@ -46,15 +50,19 @@ public class Flag2MapQuizFragment extends Fragment {
     private GoogleMap map;
     private Geocoder geocoder;
     private Flag flag;
-    private QuizAnswerListener answerListener;
+    private QuizListener quizListener;
 
     /**
      * Fragment construction helper.
      *
      * @return fragment instance
      */
-    public static Flag2MapQuizFragment newInstance() {
-        return new Flag2MapQuizFragment();
+    public static Flag2MapQuizFragment newInstance(CameraPosition cameraPosition) {
+        Flag2MapQuizFragment fragment = new Flag2MapQuizFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(PARAM_CAMERA_POSITION, cameraPosition);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -79,6 +87,11 @@ public class Flag2MapQuizFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 map = googleMap;
+
+                CameraPosition cameraPosition = getArguments().getParcelable(PARAM_CAMERA_POSITION);
+                if (cameraPosition != null) {
+                    map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                }
                 map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
                 map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
@@ -89,6 +102,12 @@ public class Flag2MapQuizFragment extends Fragment {
                         } catch (IOException e) {
                             Toast.makeText(getActivity(), "Geocoding error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
+                    }
+                });
+                map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+                    @Override
+                    public void onCameraChange(CameraPosition cameraPosition) {
+                        quizListener.cameraPosition(cameraPosition);
                     }
                 });
             }
@@ -108,23 +127,23 @@ public class Flag2MapQuizFragment extends Fragment {
         Log.d(TAG, address.getCountryName());
         boolean correct = address.getCountryName().equals(getString(flag.getTranslation()));
         Toast.makeText(getActivity(), "" + correct, Toast.LENGTH_SHORT).show();
-        answerListener.quizAnswered(correct);
+        quizListener.quizAnswered(correct);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof QuizAnswerListener) {
-            answerListener = (QuizAnswerListener) context;
+        if (context instanceof QuizListener) {
+            quizListener = (QuizListener) context;
         } else {
-            throw new RuntimeException(context.toString() + " must implement QuizAnswerListener");
+            throw new RuntimeException(context.toString() + " must implement QuizListener");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        answerListener = null;
+        quizListener = null;
     }
 
     @Override

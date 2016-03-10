@@ -2,20 +2,23 @@ package ch.ranil.android.flageo;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.graphics.Camera;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
+
+import com.google.android.gms.maps.model.CameraPosition;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.ranil.android.flageo.fragment.Flag2MapQuizFragment;
 import ch.ranil.android.flageo.fragment.Flag2NameQuizFragment;
 import ch.ranil.android.flageo.fragment.Name2FlagQuizFragment;
-import ch.ranil.android.flageo.fragment.QuizAnswerListener;
+import ch.ranil.android.flageo.fragment.QuizListener;
 import ch.ranil.android.flageo.fragment.QuizResultFragment;
 
-public class QuizActivity extends AppCompatActivity implements QuizAnswerListener {
+public class QuizActivity extends AppCompatActivity implements QuizListener {
 
     public static final String PARAM_MODE = "mode";
 
@@ -35,6 +38,8 @@ public class QuizActivity extends AppCompatActivity implements QuizAnswerListene
     private int score = 0;
     private String mode;
     private CountDownTimer timer;
+
+    private CameraPosition cameraPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +78,7 @@ public class QuizActivity extends AppCompatActivity implements QuizAnswerListene
                 showResult();
             }
         };
-        //timer.start();
+        timer.start();
     }
 
     /**
@@ -86,7 +91,7 @@ public class QuizActivity extends AppCompatActivity implements QuizAnswerListene
                 quizFragment = Flag2NameQuizFragment.newInstance(NUMBER_OF_CHOICES);
                 break;
             case MODE_FLAG_TO_MAP:
-                quizFragment = Flag2MapQuizFragment.newInstance();
+                quizFragment = Flag2MapQuizFragment.newInstance(cameraPosition);
                 break;
             case MODE_NAME_TO_FLAG:
             default:
@@ -123,8 +128,11 @@ public class QuizActivity extends AppCompatActivity implements QuizAnswerListene
         if (correct) {
             score++;
         }
-
         loadQuiz();
     }
 
+    @Override
+    public void cameraPosition(CameraPosition cameraPosition) {
+        this.cameraPosition = cameraPosition;
+    }
 }
