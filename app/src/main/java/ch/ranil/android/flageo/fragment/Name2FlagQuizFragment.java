@@ -8,11 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.ranil.android.flageo.R;
+import ch.ranil.android.flageo.cache.BitmapCache;
 import ch.ranil.android.flageo.model.Flag;
 import ch.ranil.android.flageo.model.Quiz;
 import ch.ranil.android.flageo.model.QuizBuilder;
@@ -32,9 +32,16 @@ public class Name2FlagQuizFragment extends Fragment {
 
     private int numberOfChoices = 4;
     private Quiz<Flag> quiz;
-
     private QuizAnswerListener answerListener;
 
+    private BitmapCache bitmapCache = new BitmapCache();
+
+    /**
+     * Fragment construction helper.
+     *
+     * @param numberOfChoices number of flag choices
+     * @return fragment instance
+     */
     public static Name2FlagQuizFragment newInstance(int numberOfChoices) {
         Name2FlagQuizFragment fragment = new Name2FlagQuizFragment();
         Bundle args = new Bundle();
@@ -73,7 +80,7 @@ public class Name2FlagQuizFragment extends Fragment {
 
         for (int i = 0; i < flagButtons.length; i++) {
             Flag f = quiz.getOption(i);
-            flagButtons[i].setImageResource(f.getDrawable());
+            bitmapCache.loadBitmap(f.getDrawable(), flagButtons[i]);
             flagButtons[i].setOnClickListener(flagButtonClickListener);
         }
 
@@ -98,9 +105,6 @@ public class Name2FlagQuizFragment extends Fragment {
                     return;
                 case R.id.btn_flag4:
                     processAnswer(3);
-                    return;
-                default:
-                    Toast.makeText(getActivity(), "Unexpected button pressed: " + v.getId(), Toast.LENGTH_SHORT).show();
             }
         }
     };

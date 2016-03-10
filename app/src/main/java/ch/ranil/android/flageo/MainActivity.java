@@ -4,9 +4,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -71,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements Name2FlagQuizFrag
             @Override
             public void onFinish() {
                 progressBar.setProgress(500);
-                Toast.makeText(getBaseContext(), "Finished", Toast.LENGTH_SHORT).show();
                 showResult();
             }
         };
@@ -81,10 +78,7 @@ public class MainActivity extends AppCompatActivity implements Name2FlagQuizFrag
     @Override
     public void quizAnswered(boolean correct) {
         if (correct) {
-            Toast.makeText(this, "Correct 8)", Toast.LENGTH_SHORT).show();
             score++;
-        } else {
-            Toast.makeText(this, "Wrong dummy :#", Toast.LENGTH_SHORT).show();
         }
 
         loadQuiz();
