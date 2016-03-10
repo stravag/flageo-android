@@ -2,16 +2,23 @@ package ch.ranil.android.flageo.fragment;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 
 import butterknife.Bind;
@@ -28,6 +35,8 @@ import ch.ranil.android.flageo.model.Flag;
  */
 public class Flag2MapQuizFragment extends Fragment {
 
+    private static final String TAG = "Flag2MapQuizFragment";
+
     @Bind(R.id.txt_flagAsked)
     ImageView flagView;
 
@@ -35,6 +44,7 @@ public class Flag2MapQuizFragment extends Fragment {
     MapView mapView;
 
     private GoogleMap map;
+    private Geocoder geocoder;
     private Flag flag;
     private QuizAnswerListener answerListener;
 
@@ -53,6 +63,8 @@ public class Flag2MapQuizFragment extends Fragment {
 
         Flag[] flags = Flag.values();
         flag = flags[new Random().nextInt(flags.length - 1)];
+
+        geocoder = new Geocoder(getActivity());
     }
 
     @Override
@@ -67,6 +79,18 @@ public class Flag2MapQuizFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 map = googleMap;
+                map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                    @Override
+                    public void onMapLongClick(LatLng latLng) {
+                        try {
+                            List<Address> location = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                            processAnswer(location.get(0));
+                        } catch (IOException e) {
+                            Toast.makeText(getActivity(), "Geocoding error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
 
@@ -78,9 +102,13 @@ public class Flag2MapQuizFragment extends Fragment {
     /**
      * Check if the selected answer is correct and send info back to activity.
      *
-     * @param answer selected answer
+     * @param address selected address
      */
-    private void processAnswer(int answer) {
+    private void processAnswer(Address address) {
+        Log.d(TAG, address.getCountryName());
+        boolean correct = address.getCountryName().equals(getString(flag.getTranslation()));
+        Toast.makeText(getActivity(), "" + correct, Toast.LENGTH_SHORT).show();
+        answerListener.quizAnswered(correct);
     }
 
     @Override
