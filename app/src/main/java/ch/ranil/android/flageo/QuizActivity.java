@@ -33,6 +33,7 @@ public class QuizActivity extends AppCompatActivity implements QuizAnswerListene
 
     private int score = 0;
     private String mode;
+    private CountDownTimer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +48,16 @@ public class QuizActivity extends AppCompatActivity implements QuizAnswerListene
         initializeCountdown();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timer.cancel();
+    }
+
     private void initializeCountdown() {
         progressBar.setMax(PROGRESS_SCALE);
         progressBar.setProgress(0);
-        CountDownTimer timer = new CountDownTimer(TIMER, TIMER_INTERVAL) {
+        timer = new CountDownTimer(TIMER, TIMER_INTERVAL) {
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -115,11 +122,4 @@ public class QuizActivity extends AppCompatActivity implements QuizAnswerListene
         loadQuiz();
     }
 
-    /**
-     * For development
-     */
-    @OnClick(R.id.restart)
-    public void restartQuiz() {
-        recreate();
-    }
 }

@@ -25,8 +25,14 @@
     </style>
 
     <style name="FlagTextView" parent="AppTheme">
-        <item name="android:maxWidth">150dp</item>
-        <item name="android:maxHeight">150dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:minWidth">160dp</item>
+        <item name="android:maxWidth">160dp</item>
+        <item name="android:minHeight">90dp</item>
+        <item name="android:maxHeight">90dp</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Material.Medium</item>
     </style>
 
     <style name="FlagImageView" parent="AppTheme">
