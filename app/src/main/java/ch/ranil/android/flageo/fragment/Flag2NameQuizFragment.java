@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,12 +23,12 @@ import ch.ranil.android.flageo.model.QuizBuilder;
  * {@link QuizAnswerListener} interface
  * to handle interaction events.
  */
-public class Name2FlagQuizFragment extends Fragment {
+public class Flag2NameQuizFragment extends Fragment {
 
     private static final String PARAM_NUMBER_OF_CHOICES = "numberOfChoices";
 
     @Bind(R.id.txt_flagAsked)
-    TextView flagAsked;
+    ImageView flagAsked;
 
     private int numberOfChoices = 4;
     private Quiz<Flag> quiz;
@@ -42,8 +42,8 @@ public class Name2FlagQuizFragment extends Fragment {
      * @param numberOfChoices number of flag choices
      * @return fragment instance
      */
-    public static Name2FlagQuizFragment newInstance(int numberOfChoices) {
-        Name2FlagQuizFragment fragment = new Name2FlagQuizFragment();
+    public static Flag2NameQuizFragment newInstance(int numberOfChoices) {
+        Flag2NameQuizFragment fragment = new Flag2NameQuizFragment();
         Bundle args = new Bundle();
         args.putInt(PARAM_NUMBER_OF_CHOICES, numberOfChoices);
         fragment.setArguments(args);
@@ -65,22 +65,22 @@ public class Name2FlagQuizFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View fragmentLayout = inflater.inflate(R.layout.fragment_name2flag_quiz, container, false);
+        View fragmentLayout = inflater.inflate(R.layout.fragment_flag2name_quiz, container, false);
         ButterKnife.bind(this, fragmentLayout);
 
-        ImageButton[] flagButtons = new ImageButton[numberOfChoices];
+        Button[] flagButtons = new Button[numberOfChoices];
 
         // TODO add dynamically to layout
-        flagButtons[0] = (ImageButton) fragmentLayout.findViewById(R.id.btn_flag1);
-        flagButtons[1] = (ImageButton) fragmentLayout.findViewById(R.id.btn_flag2);
-        flagButtons[2] = (ImageButton) fragmentLayout.findViewById(R.id.btn_flag3);
-        flagButtons[3] = (ImageButton) fragmentLayout.findViewById(R.id.btn_flag4);
+        flagButtons[0] = (Button) fragmentLayout.findViewById(R.id.btn_flag1);
+        flagButtons[1] = (Button) fragmentLayout.findViewById(R.id.btn_flag2);
+        flagButtons[2] = (Button) fragmentLayout.findViewById(R.id.btn_flag3);
+        flagButtons[3] = (Button) fragmentLayout.findViewById(R.id.btn_flag4);
 
-        flagAsked.setText(quiz.getAnswer().getTranslation());
+        bitmapCache.loadBitmap(quiz.getAnswer().getDrawable(), flagAsked);
 
         for (int i = 0; i < flagButtons.length; i++) {
             Flag f = quiz.getOption(i);
-            bitmapCache.loadBitmap(f.getDrawable(), flagButtons[i]);
+            flagButtons[i].setText(f.getTranslation());
             flagButtons[i].setOnClickListener(flagButtonClickListener);
         }
 
@@ -133,5 +133,6 @@ public class Name2FlagQuizFragment extends Fragment {
         super.onDetach();
         answerListener = null;
     }
+
 
 }
