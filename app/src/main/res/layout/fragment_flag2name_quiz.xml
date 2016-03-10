@@ -4,54 +4,54 @@
     android:layout_gravity="center"
     android:orientation="vertical">
 
-    <TextView
+    <ImageView
         android:id="@+id/txt_flagAsked"
-        style="@style/FlagTextView"
+        style="@style/FlagImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Flag asked"/>
+        android:src="@drawable/ch"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
 
-        <ImageButton
+        <Button
             android:id="@+id/btn_flag1"
-            style="@style/FlagImageView"
+            style="@style/FlagTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_row="0"
-            android:src="@drawable/ad" />
+            android:text="Flag 1" />
 
-        <ImageButton
+        <Button
             android:id="@+id/btn_flag2"
-            style="@style/FlagImageView"
+            style="@style/FlagTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
             android:layout_row="0"
-            android:src="@drawable/fi" />
+            android:text="Flag 2" />
 
-        <ImageButton
+        <Button
             android:id="@+id/btn_flag3"
-            style="@style/FlagImageView"
+            style="@style/FlagTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_row="1"
-            android:src="@drawable/ch" />
+            android:text="Flag 3" />
 
-        <ImageButton
+        <Button
             android:id="@+id/btn_flag4"
-            style="@style/FlagImageView"
+            style="@style/FlagTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
             android:layout_row="1"
-            android:src="@drawable/pa" />
+            android:text="Flag 4" />
     </GridLayout>
 </LinearLayout>
