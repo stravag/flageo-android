@@ -9,7 +9,7 @@ import android.widget.ProgressBar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+import ch.ranil.android.flageo.fragment.Flag2MapQuizFragment;
 import ch.ranil.android.flageo.fragment.Flag2NameQuizFragment;
 import ch.ranil.android.flageo.fragment.Name2FlagQuizFragment;
 import ch.ranil.android.flageo.fragment.QuizAnswerListener;
@@ -21,6 +21,7 @@ public class QuizActivity extends AppCompatActivity implements QuizAnswerListene
 
     public static final String MODE_NAME_TO_FLAG = "modeName2Flag";
     public static final String MODE_FLAG_TO_NAME = "modeFlag2Name";
+    public static final String MODE_FLAG_TO_MAP = "modeFlag2Map";
 
     private static final long TIMER = 15000; // ms
     private static final long TIMER_INTERVAL = 100; // ms
@@ -72,7 +73,7 @@ public class QuizActivity extends AppCompatActivity implements QuizAnswerListene
                 showResult();
             }
         };
-        timer.start();
+        //timer.start();
     }
 
     /**
@@ -84,6 +85,10 @@ public class QuizActivity extends AppCompatActivity implements QuizAnswerListene
             case MODE_FLAG_TO_NAME:
                 quizFragment = Flag2NameQuizFragment.newInstance(NUMBER_OF_CHOICES);
                 break;
+            case MODE_FLAG_TO_MAP:
+                quizFragment = Flag2MapQuizFragment.newInstance();
+                break;
+            case MODE_NAME_TO_FLAG:
             default:
                 quizFragment = Name2FlagQuizFragment.newInstance(NUMBER_OF_CHOICES);
         }

@@ -20,7 +20,16 @@ public class BitmapCache {
 
     private LruCache<String, Bitmap> mMemoryCache;
 
-    public BitmapCache() {
+    private static BitmapCache instance;
+
+    public static BitmapCache getInstance() {
+        if (instance == null) {
+            instance = new BitmapCache();
+        }
+        return instance;
+    }
+
+    private BitmapCache() {
 
         // Get max available VM memory, exceeding this amount will throw an
         // OutOfMemory exception. Stored in kilobytes as LruCache takes an

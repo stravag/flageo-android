@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="ch.ranil.android.flageo.MainActivity">
 
 
     <Button
         android:id="@+id/btn_quizFlag2Name"
+        style="@style/FlagTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left|top"
-        android:text="Flag to Name" />
+        android:text="Flag >> Name" />
 
     <Button
         android:id="@+id/btn_quizName2Flag"
+        style="@style/FlagTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|top"
-        android:text="Name to Flag" />
-</FrameLayout>
+        android:text="Name >> Flag" />
+
+    <Button
+        android:id="@+id/btn_quizFlag2Map"
+        style="@style/FlagTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Flag >> Map" />
+</LinearLayout>

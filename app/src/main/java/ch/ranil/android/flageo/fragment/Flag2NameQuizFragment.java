@@ -34,8 +34,6 @@ public class Flag2NameQuizFragment extends Fragment {
     private Quiz<Flag> quiz;
     private QuizAnswerListener answerListener;
 
-    private BitmapCache bitmapCache = new BitmapCache();
-
     /**
      * Fragment construction helper.
      *
@@ -76,7 +74,7 @@ public class Flag2NameQuizFragment extends Fragment {
         flagButtons[2] = (Button) fragmentLayout.findViewById(R.id.btn_flag3);
         flagButtons[3] = (Button) fragmentLayout.findViewById(R.id.btn_flag4);
 
-        bitmapCache.loadBitmap(quiz.getAnswer().getDrawable(), flagAsked);
+        BitmapCache.getInstance().loadBitmap(quiz.getAnswer().getDrawable(), flagAsked);
 
         for (int i = 0; i < flagButtons.length; i++) {
             Flag f = quiz.getOption(i);

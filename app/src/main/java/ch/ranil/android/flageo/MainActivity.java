@@ -1,8 +1,8 @@
 package ch.ranil.android.flageo;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -20,6 +20,11 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.btn_quizFlag2Name)
     public void startFlag2NameQuiz() {
         startQuiz(QuizActivity.MODE_FLAG_TO_NAME);
+    }
+
+    @OnClick(R.id.btn_quizFlag2Map)
+    public void startFlag2MapQuiz() {
+        startQuiz(QuizActivity.MODE_FLAG_TO_MAP);
     }
 
     @OnClick(R.id.btn_quizName2Flag)
