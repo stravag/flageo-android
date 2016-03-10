@@ -14,10 +14,9 @@ import ch.ranil.android.flageo.fragment.QuizResultFragment;
 
 public class MainActivity extends AppCompatActivity implements Name2FlagQuizFragment.QuizAnswerListener {
 
-    private static final String TAG = "MainActivity";
-
-    private static final long TIMER = 15000; // 10s
-    private static final long TIMER_INTERVAL = 5; // 5ms
+    private static final long TIMER = 15000; // ms
+    private static final long TIMER_INTERVAL = 100; // ms
+    private static final int PROGRESS_SCALE = 1000;
 
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
@@ -35,6 +34,30 @@ public class MainActivity extends AppCompatActivity implements Name2FlagQuizFrag
         initializeCountdown();
     }
 
+    private void initializeCountdown() {
+        progressBar.setMax(PROGRESS_SCALE);
+        progressBar.setProgress(0);
+        CountDownTimer timer = new CountDownTimer(TIMER, TIMER_INTERVAL) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                long millisPassed = TIMER - millisUntilFinished;
+                int progress = (int) (millisPassed * PROGRESS_SCALE / TIMER);
+                progressBar.setProgress(progress);
+            }
+
+            @Override
+            public void onFinish() {
+                progressBar.setProgress(PROGRESS_SCALE);
+                showResult();
+            }
+        };
+        timer.start();
+    }
+
+    /**
+     * Loads and shows the next quiz fragment.
+     */
     private void loadQuiz() {
         Name2FlagQuizFragment quizFragment = Name2FlagQuizFragment.newInstance(4);
 
@@ -45,6 +68,9 @@ public class MainActivity extends AppCompatActivity implements Name2FlagQuizFrag
         transaction.commit();
     }
 
+    /**
+     * Shows the quiz result screen once the timer finished.
+     */
     private void showResult() {
         QuizResultFragment resultFragment = QuizResultFragment.newInstance(score);
 
@@ -55,26 +81,11 @@ public class MainActivity extends AppCompatActivity implements Name2FlagQuizFrag
         transaction.commit();
     }
 
-    private void initializeCountdown() {
-        progressBar.setMax(100);
-        progressBar.setProgress(0);
-        CountDownTimer timer = new CountDownTimer(10000, 1) {
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-                int progress = (int) (100 - (millisUntilFinished / 100));
-                progressBar.setProgress(progress);
-            }
-
-            @Override
-            public void onFinish() {
-                progressBar.setProgress(500);
-                showResult();
-            }
-        };
-        timer.start();
-    }
-
+    /**
+     * Quiz fragment callback method.
+     *
+     * @param correct true if the quiz fragment was answered correctly.
+     */
     @Override
     public void quizAnswered(boolean correct) {
         if (correct) {
@@ -84,6 +95,9 @@ public class MainActivity extends AppCompatActivity implements Name2FlagQuizFrag
         loadQuiz();
     }
 
+    /**
+     * For development
+     */
     @OnClick(R.id.restart)
     public void restartQuiz() {
         recreate();
