@@ -66,7 +66,7 @@ public class BitmapCache {
         if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
         } else {
-            imageView.setImageResource(R.drawable.ag);
+            imageView.setImageResource(android.R.color.transparent);
             BitmapWorkerTask task = new BitmapWorkerTask(imageView, imageView.getContext());
             task.execute(resId);
         }
