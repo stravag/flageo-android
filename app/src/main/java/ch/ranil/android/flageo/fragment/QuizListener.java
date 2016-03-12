@@ -15,4 +15,5 @@ import com.google.android.gms.maps.model.CameraPosition;
 public interface QuizListener {
     void quizAnswered(boolean correct);
     void cameraPosition(CameraPosition cameraPosition);
+    void timeBoost(long addedTime);
 }

@@ -73,6 +73,8 @@ public class Flag2MapQuizFragment extends Fragment {
         flag = flags[new Random().nextInt(flags.length - 1)];
 
         geocoder = new Geocoder(getActivity());
+
+        quizListener.timeBoost(flag.getTimeBoost());
     }
 
     @Override
@@ -88,6 +90,7 @@ public class Flag2MapQuizFragment extends Fragment {
             public void onMapReady(GoogleMap googleMap) {
                 map = googleMap;
 
+                // re-position map
                 CameraPosition cameraPosition = getArguments().getParcelable(PARAM_CAMERA_POSITION);
                 if (cameraPosition != null) {
                     map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -98,9 +101,13 @@ public class Flag2MapQuizFragment extends Fragment {
                     public void onMapLongClick(LatLng latLng) {
                         try {
                             List<Address> location = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-                            processAnswer(location.get(0));
+                            processAnswer(location.get(0).getCountryName());
                         } catch (IOException e) {
                             Toast.makeText(getActivity(), "Geocoding error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        } catch (IndexOutOfBoundsException e) {
+                            // Selected location on map without an address
+                            // if this is ever a real country we're officially f*cked
+                            processAnswer("Donaldtrumpia");
                         }
                     }
                 });
@@ -121,11 +128,11 @@ public class Flag2MapQuizFragment extends Fragment {
     /**
      * Check if the selected answer is correct and send info back to activity.
      *
-     * @param address selected address
+     * @param countryName selected country
      */
-    private void processAnswer(Address address) {
-        Log.d(TAG, address.getCountryName());
-        boolean correct = address.getCountryName().equals(getString(flag.getTranslation()));
+    private void processAnswer(String countryName) {
+        Log.d(TAG, countryName);
+        boolean correct = getString(flag.getTranslation()).equals(countryName);
         Toast.makeText(getActivity(), "" + correct, Toast.LENGTH_SHORT).show();
         quizListener.quizAnswered(correct);
     }

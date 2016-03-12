@@ -7,34 +7,41 @@ import ch.ranil.android.flageo.R;
  */
 public enum Flag implements Quizable {
 
-    AFGHANISTAN(R.drawable.af, R.string.afghanistan, 3),
-    ALBANIA(R.drawable.al, R.string.albania, 3),
-    ALGERIA(R.drawable.dz, R.string.algeria, 2),
-    ANDORRA(R.drawable.ad, R.string.andorra, 3),
-    ANGOLA(R.drawable.ao, R.string.angola, 2),
-    ANTIGUA(R.drawable.ag, R.string.antigua, 3),
-    ARGENTINA(R.drawable.ar, R.string.argentina, 1),
-    ARMENIA(R.drawable.am, R.string.armenia, 3),
-    AUSTRALIA(R.drawable.au, R.string.australia, 3),
-    AUSTRIA(R.drawable.at, R.string.austria, 1),
-    AZERBAIJAN(R.drawable.az, R.string.azerbaijan, 3),
+    AFGHANISTAN(R.drawable.af, R.string.afghanistan, 652230),
+    ALBANIA(R.drawable.al, R.string.albania, 28748),
+    ALGERIA(R.drawable.dz, R.string.algeria, 2381741),
+    ANDORRA(R.drawable.ad, R.string.andorra, 468),
+    ANGOLA(R.drawable.ao, R.string.angola),
+    ANTIGUA(R.drawable.ag, R.string.antigua),
+    ARGENTINA(R.drawable.ar, R.string.argentina),
+    ARMENIA(R.drawable.am, R.string.armenia),
+    AUSTRALIA(R.drawable.au, R.string.australia),
+    AUSTRIA(R.drawable.at, R.string.austria),
+    AZERBAIJAN(R.drawable.az, R.string.azerbaijan),
 
-    UGANDA(R.drawable.ug, R.string.uganda, 3),
-    UKRAINE(R.drawable.ua, R.string.ukraine, 3),
-    UAE(R.drawable.ae, R.string.uae, 3),
-    UK(R.drawable.gb, R.string.uk, 3),
-    URUGUAY(R.drawable.uy, R.string.uruguay, 2),
-    UZBEKISTAN(R.drawable.uz, R.string.uzbekistan, 3),
+    UGANDA(R.drawable.ug, R.string.uganda),
+    UKRAINE(R.drawable.ua, R.string.ukraine),
+    UAE(R.drawable.ae, R.string.uae),
+    UK(R.drawable.gb, R.string.uk),
+    URUGUAY(R.drawable.uy, R.string.uruguay),
+    UZBEKISTAN(R.drawable.uz, R.string.uzbekistan),
     ;
+
+    private final static long REFERENCE_AREA = 17098242;
 
     private int drawable;
     private int translation;
-    private int difficulty;
+    private long area = REFERENCE_AREA;
 
-    Flag(int drawable, int translation, int difficulty) {
+    Flag(int drawable, int translation) {
         this.drawable = drawable;
         this.translation = translation;
-        this.difficulty = difficulty;
+    }
+
+    Flag(int drawable, int translation, long area) {
+        this.drawable = drawable;
+        this.translation = translation;
+        this.area = area;
     }
 
     /**
@@ -56,12 +63,12 @@ public enum Flag implements Quizable {
     }
 
     /**
-     * Flag difficulty
+     * Small countries get a time boost when in map quiz mode.
+     * Calculation based on area in square kilometers: TODO find a better metric
      *
-     * @return difficulty
+     * @return boost time in ms
      */
-    public int getDifficulty() {
-        return difficulty;
+    public long getTimeBoost() {
+        return Math.max(REFERENCE_AREA / area, 5000);
     }
-
 }
