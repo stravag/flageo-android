@@ -95,7 +95,7 @@ public class Flag2MapQuizFragment extends Fragment {
                 if (cameraPosition != null) {
                     map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 }
-                map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
                     public void onMapLongClick(LatLng latLng) {

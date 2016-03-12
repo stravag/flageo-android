@@ -71,7 +71,7 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
 
     private void startCountdown(final long millisInFuture, final int progressOffset) {
 
-        Log.e(TAG, String.format("starting countdown for %dms", millisInFuture));
+        Log.d(TAG, String.format("starting countdown for %dms", millisInFuture));
 
         timer = new CountDownTimer(millisInFuture, TIMER_INTERVAL) {
 
@@ -79,7 +79,7 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
             public void onTick(long millisUntilFinished) {
                 remainingMillis = millisUntilFinished;
                 int progress = (int) (millisInFuture - millisUntilFinished) + progressOffset;
-                Log.d(TAG, String.format("%d / %d, progress=%d", millisUntilFinished, millisInFuture, progressBar.getProgress()));
+//                Log.d(TAG, String.format("%d / %d, progress=%d", millisUntilFinished, millisInFuture, progressBar.getProgress()));
                 progressBar.setProgress(progress);
             }
 
