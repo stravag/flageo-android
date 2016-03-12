@@ -20,7 +20,16 @@ public class BitmapCache {
 
     private LruCache<String, Bitmap> mMemoryCache;
 
-    public BitmapCache() {
+    private static BitmapCache instance;
+
+    public static BitmapCache getInstance() {
+        if (instance == null) {
+            instance = new BitmapCache();
+        }
+        return instance;
+    }
+
+    private BitmapCache() {
 
         // Get max available VM memory, exceeding this amount will throw an
         // OutOfMemory exception. Stored in kilobytes as LruCache takes an
@@ -57,7 +66,7 @@ public class BitmapCache {
         if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
         } else {
-            imageView.setImageResource(R.drawable.ag);
+            imageView.setImageResource(android.R.color.transparent);
             BitmapWorkerTask task = new BitmapWorkerTask(imageView, imageView.getContext());
             task.execute(resId);
         }

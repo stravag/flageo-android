@@ -20,7 +20,7 @@ import ch.ranil.android.flageo.model.QuizBuilder;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link QuizAnswerListener} interface
+ * {@link QuizListener} interface
  * to handle interaction events.
  */
 public class Name2FlagQuizFragment extends Fragment {
@@ -32,9 +32,7 @@ public class Name2FlagQuizFragment extends Fragment {
 
     private int numberOfChoices = 4;
     private Quiz<Flag> quiz;
-    private QuizAnswerListener answerListener;
-
-    private BitmapCache bitmapCache = new BitmapCache();
+    private QuizListener answerListener;
 
     /**
      * Fragment construction helper.
@@ -80,7 +78,7 @@ public class Name2FlagQuizFragment extends Fragment {
 
         for (int i = 0; i < flagButtons.length; i++) {
             Flag f = quiz.getOption(i);
-            bitmapCache.loadBitmap(f.getDrawable(), flagButtons[i]);
+            BitmapCache.getInstance().loadBitmap(f.getDrawable(), flagButtons[i]);
             flagButtons[i].setOnClickListener(flagButtonClickListener);
         }
 
@@ -121,10 +119,10 @@ public class Name2FlagQuizFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof QuizAnswerListener) {
-            answerListener = (QuizAnswerListener) context;
+        if (context instanceof QuizListener) {
+            answerListener = (QuizListener) context;
         } else {
-            throw new RuntimeException(context.toString() + " must implement QuizAnswerListener");
+            throw new RuntimeException(context.toString() + " must implement QuizListener");
         }
     }
 

@@ -1,9 +1,6 @@
 <resources>
     <string name="app_name">Geo Flag Quiz</string>
 
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-
     <!-- Flags -->
     <string name="afghanistan">Afghanistan</string>
     <string name="albania">Albania</string>
@@ -23,11 +20,12 @@
     <string name="uganda">Uganda</string>
     <string name="ukraine">Ukraine</string>
     <string name="uae">United Arab Emirates</string>
-    <string name="uk">The United Kingdom</string>
-    <string name="usa">The United States</string>
+    <string name="uk">United Kingdom</string>
+    <string name="usa">United States</string>
     <string name="uruguay">Uruguay</string>
     <string name="uzbekistan">Uzbekistan</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="score">You scored %d points.</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
