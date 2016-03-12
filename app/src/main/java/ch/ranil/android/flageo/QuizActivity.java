@@ -89,7 +89,7 @@ public class QuizActivity extends AppCompatActivity implements QuizAnswerListene
         }
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragmentContainer, quizFragment);
+        transaction.replace(R.id.fragmentContainer, quizFragment, mode);
         transaction.addToBackStack(null);
 
         transaction.commit();
