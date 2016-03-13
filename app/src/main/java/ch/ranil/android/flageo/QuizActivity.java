@@ -6,6 +6,11 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -18,6 +23,7 @@ import ch.ranil.android.flageo.fragment.Flag2NameQuizFragment;
 import ch.ranil.android.flageo.fragment.Name2FlagQuizFragment;
 import ch.ranil.android.flageo.fragment.QuizListener;
 import ch.ranil.android.flageo.fragment.QuizResultFragment;
+import ch.ranil.android.flageo.utils.UiUtils;
 
 public class QuizActivity extends AppCompatActivity implements QuizListener {
 
@@ -29,8 +35,6 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
     public static final String MODE_FLAG_TO_NAME = "modeFlag2Name";
     public static final String MODE_FLAG_TO_MAP = "modeFlag2Map";
 
-    // Milliseconds, MUSTN'T EXCEED INTEGER-MAXVALUE!
-    // Potentially dangerous but simple solution to use timer data for progressbar progress
     private static final long TIMER = 60000;
     private static final long TIMER_INTERVAL = 100; // ms
 
@@ -38,6 +42,9 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
 
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
+
+    @Bind(R.id.flasher)
+    View flasher;
 
     private int score = 0;
     private String mode;
@@ -56,6 +63,9 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
 
         mode = getIntent().getStringExtra(PARAM_MODE);
 
+        // I know, it's potentially dangerous to use the timer scale for the progressbar (long > int)
+        // but I guess it's highly unlikely someone boosts the timer above Integer.MAX_VALUE and it makes
+        // it a lot easier to manage the progressbar progress.
         progressBar.setMax((int) TIMER);
         progressBar.setProgress(0);
 
@@ -144,8 +154,11 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
     public void quizAnswered(boolean correct) {
         if (correct) {
             score++;
+            loadQuiz();
+        } else {
+            timeBoost(-1000);
+            UiUtils.flashView(flasher);
         }
-        loadQuiz();
     }
 
     @Override

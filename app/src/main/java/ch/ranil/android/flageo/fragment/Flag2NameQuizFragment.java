@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -33,6 +35,7 @@ public class Flag2NameQuizFragment extends Fragment {
     private int numberOfChoices = 4;
     private Quiz<Flag> quiz;
     private QuizListener answerListener;
+    private Button[] flagButtons;
 
     /**
      * Fragment construction helper.
@@ -66,7 +69,7 @@ public class Flag2NameQuizFragment extends Fragment {
         View fragmentLayout = inflater.inflate(R.layout.fragment_flag2name_quiz, container, false);
         ButterKnife.bind(this, fragmentLayout);
 
-        Button[] flagButtons = new Button[numberOfChoices];
+        flagButtons = new Button[numberOfChoices];
 
         // TODO add dynamically to layout
         flagButtons[0] = (Button) fragmentLayout.findViewById(R.id.btn_flag1);
