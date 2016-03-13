@@ -35,7 +35,7 @@ public class Name2FlagQuizFragment extends Fragment {
 
     private int numberOfChoices = 4;
     private Quiz<Flag> quiz;
-    private QuizListener answerListener;
+    private QuizListener quizListener;
     private ImageButton[] flagButtons;
 
     private int wrongCounter;
@@ -122,9 +122,9 @@ public class Name2FlagQuizFragment extends Fragment {
         boolean correct = quiz.isCorrect(answer);
         if (!correct) {
             UiUtils.shakeView(flagButtons[answer]);
-            answerListener.timeBoost(++wrongCounter * WRONG_PENALTY);
+            quizListener.timeBoost(++wrongCounter * WRONG_PENALTY);
         } else {
-            answerListener.quizAnswered(true);
+            quizListener.quizAnswered(true);
         }
     }
 
@@ -132,7 +132,7 @@ public class Name2FlagQuizFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof QuizListener) {
-            answerListener = (QuizListener) context;
+            quizListener = (QuizListener) context;
         } else {
             throw new RuntimeException(context.toString() + " must implement QuizListener");
         }
@@ -141,7 +141,7 @@ public class Name2FlagQuizFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        answerListener = null;
+        quizListener = null;
     }
 
 }

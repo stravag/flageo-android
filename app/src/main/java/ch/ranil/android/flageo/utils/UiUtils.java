@@ -1,47 +1,39 @@
 package ch.ranil.android.flageo.utils;
 
+import android.graphics.drawable.TransitionDrawable;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
 
 public class UiUtils {
 
-    public static void flashView(final View view) {
+    public static void flashView(final View view, int drawable) {
 
-        Animation flash = new AlphaAnimation(0.0f, 1.0f);
-        flash.setDuration(100);
-        flash.setInterpolator(new LinearInterpolator());
-        flash.setRepeatCount(1);
-        flash.setRepeatMode(Animation.REVERSE);
-        flash.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                view.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        view.setVisibility(View.VISIBLE);
-        view.startAnimation(flash);
+        TransitionDrawable redFlash = (TransitionDrawable) view.getContext().getResources().getDrawable(drawable);
+        if (redFlash != null) {
+            view.setBackground(redFlash);
+            redFlash.startTransition(100);
+            redFlash.reverseTransition(100);
+        }
     }
 
+    /**
+     * Shake the given view.
+     *
+     * @param view to shake
+     */
     public static void shakeView(final View view) {
 
         shakeView(view, null);
     }
 
+    /**
+     * Shake the given view, triggers the given callback listener.
+     *
+     * @param view to shake
+     * @param callback callback
+     */
     public static void shakeView(final View view, Animation.AnimationListener callback) {
 
         Animation shake = new TranslateAnimation(0.0f, 10.0f, 0.0f, 0.0f);
@@ -53,13 +45,6 @@ public class UiUtils {
         if (callback != null) {
             shake.setAnimationListener(callback);
         }
-
-        /*
-        Animation shake = new RotateAnimation(-5.0f, 5.0f, 0.5f, 0.5f);
-        shake.setDuration(100);
-        shake.setRepeatCount(5);
-        shake.setRepeatMode(Animation.REVERSE);
-        */
 
         view.startAnimation(shake);
     }

@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -43,6 +42,12 @@ public class Flag2MapQuizFragment extends Fragment {
 
     private static final String PARAM_CAMERA_POSITION = "cameraPosition";
 
+    private static final int MAX_WRONG_COUNTER = 2;
+    private static final int WRONG_PENALTY = -1000;
+
+    @Bind(R.id.flag_container)
+    View flagContainer;
+
     @Bind(R.id.txt_flagAsked)
     ImageView flagView;
 
@@ -53,6 +58,8 @@ public class Flag2MapQuizFragment extends Fragment {
     private Geocoder geocoder;
     private Flag flag;
     private QuizListener quizListener;
+
+    private int wrongCounter;
 
     /**
      * Fragment construction helper.
@@ -136,23 +143,13 @@ public class Flag2MapQuizFragment extends Fragment {
         Log.d(TAG, countryName);
         boolean correct = getString(flag.getTranslation()).equals(countryName);
         if (!correct) {
-            UiUtils.shakeView(flagView, new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    quizListener.quizAnswered(false);
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
+            UiUtils.flashView(flagContainer, R.drawable.flash_red);
+            quizListener.timeBoost(++wrongCounter * WRONG_PENALTY);
+            if (wrongCounter >= MAX_WRONG_COUNTER) {
+                quizListener.quizAnswered(false);
+            }
         } else {
+            UiUtils.flashView(flagContainer, R.drawable.flash_green);
             quizListener.quizAnswered(true);
         }
     }

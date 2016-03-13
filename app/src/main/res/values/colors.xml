@@ -6,5 +6,6 @@
 
     <color name="black_overlay">#66000000</color>
 
-    <color name="red_flash">#FF0000</color>
+    <color name="red_flash">#D50000</color>
+    <color name="green_flash">#64DD17</color>
 </resources>
