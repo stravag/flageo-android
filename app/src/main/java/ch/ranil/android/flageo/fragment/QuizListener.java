@@ -25,4 +25,9 @@ public interface QuizListener {
      * @param addedTime time to add to timer
      */
     void timeBoost(long addedTime);
+
+    /**
+     * In the unlikely event that every flag has been answered.
+     */
+    void answeredAllQuestions();
 }

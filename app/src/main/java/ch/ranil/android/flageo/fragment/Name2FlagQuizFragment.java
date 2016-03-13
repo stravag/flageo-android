@@ -15,7 +15,7 @@ import ch.ranil.android.flageo.R;
 import ch.ranil.android.flageo.cache.BitmapCache;
 import ch.ranil.android.flageo.model.Flag;
 import ch.ranil.android.flageo.model.Quiz;
-import ch.ranil.android.flageo.model.QuizBuilder;
+import ch.ranil.android.flageo.model.FlagQuizBuilder;
 import ch.ranil.android.flageo.utils.UiUtils;
 
 /**
@@ -62,7 +62,11 @@ public class Name2FlagQuizFragment extends Fragment {
             numberOfChoices = getArguments().getInt(PARAM_NUMBER_OF_CHOICES);
         }
 
-        quiz = QuizBuilder.buildFlagQuiz(Flag.class, numberOfChoices);
+        try {
+            quiz = FlagQuizBuilder.getInstance().buildQuiz(numberOfChoices);
+        } catch (FlagQuizBuilder.NothingToQuizException e) {
+            quizListener.answeredAllQuestions();
+        }
     }
 
     @Override

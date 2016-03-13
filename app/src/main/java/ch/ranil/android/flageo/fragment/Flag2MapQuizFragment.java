@@ -19,13 +19,13 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.ranil.android.flageo.R;
 import ch.ranil.android.flageo.cache.BitmapCache;
 import ch.ranil.android.flageo.model.Flag;
+import ch.ranil.android.flageo.model.FlagQuizBuilder;
 import ch.ranil.android.flageo.utils.UiUtils;
 
 /**
@@ -70,8 +70,12 @@ public class Flag2MapQuizFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Flag[] flags = Flag.values();
-        flag = flags[new Random().nextInt(flags.length - 1)];
+        try {
+            flag = FlagQuizBuilder.getInstance().nextUnasked();
+        } catch (FlagQuizBuilder.NothingToQuizException e) {
+            quizListener.answeredAllQuestions();
+            return;
+        }
 
         geocoder = new Geocoder(getActivity());
 
@@ -109,7 +113,9 @@ public class Flag2MapQuizFragment extends Fragment {
             }
         });
 
-        BitmapCache.getInstance().loadBitmap(flag.getDrawable(), flagView);
+        if (flag != null) {
+            BitmapCache.getInstance().loadBitmap(flag.getDrawable(), flagView);
+        }
 
         return fragmentLayout;
     }

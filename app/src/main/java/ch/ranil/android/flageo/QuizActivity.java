@@ -15,6 +15,7 @@ import ch.ranil.android.flageo.fragment.Flag2NameQuizFragment;
 import ch.ranil.android.flageo.fragment.Name2FlagQuizFragment;
 import ch.ranil.android.flageo.fragment.QuizListener;
 import ch.ranil.android.flageo.fragment.QuizResultFragment;
+import ch.ranil.android.flageo.model.FlagQuizBuilder;
 
 public class QuizActivity extends AppCompatActivity implements QuizListener {
 
@@ -55,6 +56,7 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
         progressBar.setMax((int) TIMER);
         progressBar.setProgress(0);
 
+        FlagQuizBuilder.newInstance();
         loadQuiz();
         startCountdown(TIMER, 0);
     }
@@ -144,5 +146,11 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
         timer.cancel();
         progressBar.setMax((int) (progressBar.getMax() + addedMillis));
         startCountdown(remainingMillis + addedMillis, progressBar.getProgress());
+    }
+
+    @Override
+    public void answeredAllQuestions() {
+        timer.cancel();
+        timer.onFinish();
     }
 }

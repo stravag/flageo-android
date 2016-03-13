@@ -15,7 +15,7 @@ import ch.ranil.android.flageo.R;
 import ch.ranil.android.flageo.cache.BitmapCache;
 import ch.ranil.android.flageo.model.Flag;
 import ch.ranil.android.flageo.model.Quiz;
-import ch.ranil.android.flageo.model.QuizBuilder;
+import ch.ranil.android.flageo.model.FlagQuizBuilder;
 import ch.ranil.android.flageo.utils.UiUtils;
 
 /**
@@ -35,7 +35,7 @@ public class Flag2NameQuizFragment extends Fragment {
 
     private int numberOfChoices = 4;
     private Quiz<Flag> quiz;
-    private QuizListener answerListener;
+    private QuizListener quizListener;
     private Button[] flagButtons;
 
     private int wrongCounter;
@@ -62,7 +62,11 @@ public class Flag2NameQuizFragment extends Fragment {
             numberOfChoices = getArguments().getInt(PARAM_NUMBER_OF_CHOICES);
         }
 
-        quiz = QuizBuilder.buildFlagQuiz(Flag.class, numberOfChoices);
+        try {
+            quiz = FlagQuizBuilder.getInstance().buildQuiz(numberOfChoices);
+        } catch (FlagQuizBuilder.NothingToQuizException e) {
+            quizListener.answeredAllQuestions();
+        }
     }
 
     @Override
@@ -122,9 +126,9 @@ public class Flag2NameQuizFragment extends Fragment {
         boolean correct = quiz.isCorrect(answer);
         if (!correct) {
             UiUtils.shakeView(flagButtons[answer]);
-            answerListener.timeBoost(++wrongCounter * WRONG_PENALTY);
+            quizListener.timeBoost(++wrongCounter * WRONG_PENALTY);
         } else {
-            answerListener.quizAnswered(true);
+            quizListener.quizAnswered(true);
         }
     }
 
@@ -132,7 +136,7 @@ public class Flag2NameQuizFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof QuizListener) {
-            answerListener = (QuizListener) context;
+            quizListener = (QuizListener) context;
         } else {
             throw new RuntimeException(context.toString() + " must implement QuizListener");
         }
@@ -141,7 +145,7 @@ public class Flag2NameQuizFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        answerListener = null;
+        quizListener = null;
     }
 
 
