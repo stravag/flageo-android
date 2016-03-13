@@ -6,10 +6,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.ProgressBar;
-
-import com.google.android.gms.maps.model.CameraPosition;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,15 +34,10 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
 
-    @Bind(R.id.flasher)
-    View flasher;
-
     private int score = 0;
     private String mode;
     private CountDownTimer timer;
     private long remainingMillis = TIMER;
-
-    private CameraPosition cameraPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +98,7 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
                 quizFragment = Flag2NameQuizFragment.newInstance(NUMBER_OF_CHOICES);
                 break;
             case MODE_FLAG_TO_MAP:
-                quizFragment = Flag2MapQuizFragment.newInstance(cameraPosition);
+                quizFragment = Flag2MapQuizFragment.newInstance();
                 break;
             case MODE_NAME_TO_FLAG:
             default:
@@ -116,11 +108,6 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
         getFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.animator.in, R.animator.out)
-//                .setCustomAnimations(
-//                        R.animator.card_flip_right_in,
-//                        R.animator.card_flip_right_out,
-//                        R.animator.card_flip_left_in,
-//                        R.animator.card_flip_left_out)
                 .replace(R.id.fragment_container, quizFragment, mode)
                 .addToBackStack(null)
                 .commit();
@@ -150,11 +137,6 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
             score++;
         }
         loadQuiz();
-    }
-
-    @Override
-    public void cameraPosition(CameraPosition cameraPosition) {
-        this.cameraPosition = cameraPosition;
     }
 
     @Override

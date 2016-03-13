@@ -12,11 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
@@ -39,8 +37,6 @@ import ch.ranil.android.flageo.utils.UiUtils;
 public class Flag2MapQuizFragment extends Fragment {
 
     private static final String TAG = "Flag2MapQuizFragment";
-
-    private static final String PARAM_CAMERA_POSITION = "cameraPosition";
 
     private static final int MAX_WRONG_COUNTER = 2;
     private static final int WRONG_PENALTY = -1000;
@@ -66,12 +62,8 @@ public class Flag2MapQuizFragment extends Fragment {
      *
      * @return fragment instance
      */
-    public static Flag2MapQuizFragment newInstance(CameraPosition cameraPosition) {
-        Flag2MapQuizFragment fragment = new Flag2MapQuizFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(PARAM_CAMERA_POSITION, cameraPosition);
-        fragment.setArguments(args);
-        return fragment;
+    public static Flag2MapQuizFragment newInstance() {
+        return new Flag2MapQuizFragment();
     }
 
     @Override
@@ -98,12 +90,6 @@ public class Flag2MapQuizFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 map = googleMap;
-
-                // re-position map
-                CameraPosition cameraPosition = getArguments().getParcelable(PARAM_CAMERA_POSITION);
-                if (cameraPosition != null) {
-                    map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                }
                 map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
@@ -118,12 +104,6 @@ public class Flag2MapQuizFragment extends Fragment {
                             // if this is ever a real country we're officially f*cked
                             processAnswer("Donaldtrumpia");
                         }
-                    }
-                });
-                map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
-                    @Override
-                    public void onCameraChange(CameraPosition cameraPosition) {
-                        quizListener.cameraPosition(cameraPosition);
                     }
                 });
             }
