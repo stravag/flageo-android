@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -18,6 +16,7 @@ import ch.ranil.android.flageo.cache.BitmapCache;
 import ch.ranil.android.flageo.model.Flag;
 import ch.ranil.android.flageo.model.Quiz;
 import ch.ranil.android.flageo.model.QuizBuilder;
+import ch.ranil.android.flageo.utils.UiUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +28,8 @@ public class Flag2NameQuizFragment extends Fragment {
 
     private static final String PARAM_NUMBER_OF_CHOICES = "numberOfChoices";
 
+    private static final int WRONG_PENALTY = -1000;
+
     @Bind(R.id.txt_flagAsked)
     ImageView flagAsked;
 
@@ -36,6 +37,8 @@ public class Flag2NameQuizFragment extends Fragment {
     private Quiz<Flag> quiz;
     private QuizListener answerListener;
     private Button[] flagButtons;
+
+    private int wrongCounter;
 
     /**
      * Fragment construction helper.
@@ -116,7 +119,13 @@ public class Flag2NameQuizFragment extends Fragment {
      * @param answer selected answer
      */
     private void processAnswer(int answer) {
-        answerListener.quizAnswered(quiz.isCorrect(answer));
+        boolean correct = quiz.isCorrect(answer);
+        if (!correct) {
+            UiUtils.shakeView(flagButtons[answer]);
+            answerListener.timeBoost(++wrongCounter * WRONG_PENALTY);
+        } else {
+            answerListener.quizAnswered(true);
+        }
     }
 
     @Override

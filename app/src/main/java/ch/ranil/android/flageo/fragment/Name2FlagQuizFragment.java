@@ -16,6 +16,7 @@ import ch.ranil.android.flageo.cache.BitmapCache;
 import ch.ranil.android.flageo.model.Flag;
 import ch.ranil.android.flageo.model.Quiz;
 import ch.ranil.android.flageo.model.QuizBuilder;
+import ch.ranil.android.flageo.utils.UiUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,12 +28,17 @@ public class Name2FlagQuizFragment extends Fragment {
 
     private static final String PARAM_NUMBER_OF_CHOICES = "numberOfChoices";
 
+    private static final int WRONG_PENALTY = -1000;
+
     @Bind(R.id.txt_flagAsked)
     TextView flagAsked;
 
     private int numberOfChoices = 4;
     private Quiz<Flag> quiz;
     private QuizListener answerListener;
+    private ImageButton[] flagButtons;
+
+    private int wrongCounter;
 
     /**
      * Fragment construction helper.
@@ -66,7 +72,7 @@ public class Name2FlagQuizFragment extends Fragment {
         View fragmentLayout = inflater.inflate(R.layout.fragment_name2flag_quiz, container, false);
         ButterKnife.bind(this, fragmentLayout);
 
-        ImageButton[] flagButtons = new ImageButton[numberOfChoices];
+        flagButtons = new ImageButton[numberOfChoices];
 
         // TODO add dynamically to layout
         flagButtons[0] = (ImageButton) fragmentLayout.findViewById(R.id.btn_flag1);
@@ -113,7 +119,13 @@ public class Name2FlagQuizFragment extends Fragment {
      * @param answer selected answer
      */
     private void processAnswer(int answer) {
-        answerListener.quizAnswered(quiz.isCorrect(answer));
+        boolean correct = quiz.isCorrect(answer);
+        if (!correct) {
+            UiUtils.shakeView(flagButtons[answer]);
+            answerListener.timeBoost(++wrongCounter * WRONG_PENALTY);
+        } else {
+            answerListener.quizAnswered(true);
+        }
     }
 
     @Override

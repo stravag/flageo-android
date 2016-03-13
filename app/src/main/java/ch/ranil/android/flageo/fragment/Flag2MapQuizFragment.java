@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import butterknife.ButterKnife;
 import ch.ranil.android.flageo.R;
 import ch.ranil.android.flageo.cache.BitmapCache;
 import ch.ranil.android.flageo.model.Flag;
+import ch.ranil.android.flageo.utils.UiUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -133,8 +135,26 @@ public class Flag2MapQuizFragment extends Fragment {
     private void processAnswer(String countryName) {
         Log.d(TAG, countryName);
         boolean correct = getString(flag.getTranslation()).equals(countryName);
-        Toast.makeText(getActivity(), "" + correct, Toast.LENGTH_SHORT).show();
-        quizListener.quizAnswered(correct);
+        if (!correct) {
+            UiUtils.shakeView(flagView, new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    quizListener.quizAnswered(false);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+        } else {
+            quizListener.quizAnswered(true);
+        }
     }
 
     @Override

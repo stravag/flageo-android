@@ -7,12 +7,7 @@ import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.CameraPosition;
 
@@ -23,7 +18,6 @@ import ch.ranil.android.flageo.fragment.Flag2NameQuizFragment;
 import ch.ranil.android.flageo.fragment.Name2FlagQuizFragment;
 import ch.ranil.android.flageo.fragment.QuizListener;
 import ch.ranil.android.flageo.fragment.QuizResultFragment;
-import ch.ranil.android.flageo.utils.UiUtils;
 
 public class QuizActivity extends AppCompatActivity implements QuizListener {
 
@@ -127,7 +121,7 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
 //                        R.animator.card_flip_right_out,
 //                        R.animator.card_flip_left_in,
 //                        R.animator.card_flip_left_out)
-                .replace(R.id.fragmentContainer, quizFragment, mode)
+                .replace(R.id.fragment_container, quizFragment, mode)
                 .addToBackStack(null)
                 .commit();
     }
@@ -139,7 +133,7 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
         QuizResultFragment resultFragment = QuizResultFragment.newInstance(score);
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragmentContainer, resultFragment);
+        transaction.replace(R.id.fragment_container, resultFragment);
         transaction.addToBackStack(null);
 
         transaction.commit();
@@ -154,11 +148,8 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
     public void quizAnswered(boolean correct) {
         if (correct) {
             score++;
-            loadQuiz();
-        } else {
-            timeBoost(-1000);
-            UiUtils.flashView(flasher);
         }
+        loadQuiz();
     }
 
     @Override
@@ -171,6 +162,5 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
         timer.cancel();
         progressBar.setMax((int) (progressBar.getMax() + addedMillis));
         startCountdown(remainingMillis + addedMillis, progressBar.getProgress());
-        Toast.makeText(this, String.format("Boosted time by %dms", addedMillis), Toast.LENGTH_SHORT).show();
     }
 }
