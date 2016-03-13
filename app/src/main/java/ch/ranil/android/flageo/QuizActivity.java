@@ -109,11 +109,17 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
                 quizFragment = Name2FlagQuizFragment.newInstance(NUMBER_OF_CHOICES);
         }
 
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragmentContainer, quizFragment, mode);
-        transaction.addToBackStack(null);
-
-        transaction.commit();
+        getFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.animator.in, R.animator.out)
+//                .setCustomAnimations(
+//                        R.animator.card_flip_right_in,
+//                        R.animator.card_flip_right_out,
+//                        R.animator.card_flip_left_in,
+//                        R.animator.card_flip_left_out)
+                .replace(R.id.fragmentContainer, quizFragment, mode)
+                .addToBackStack(null)
+                .commit();
     }
 
     /**

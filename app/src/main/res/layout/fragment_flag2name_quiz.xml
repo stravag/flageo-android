@@ -2,6 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:gravity="center"
     android:orientation="vertical">
 
     <ImageView
@@ -20,7 +21,7 @@
 
         <Button
             android:id="@+id/btn_flag1"
-            style="@style/FlagTextView"
+            style="@style/FlagButtonView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="0"
@@ -29,7 +30,7 @@
 
         <Button
             android:id="@+id/btn_flag2"
-            style="@style/FlagTextView"
+            style="@style/FlagButtonView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
@@ -38,7 +39,7 @@
 
         <Button
             android:id="@+id/btn_flag3"
-            style="@style/FlagTextView"
+            style="@style/FlagButtonView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="0"
@@ -47,7 +48,7 @@
 
         <Button
             android:id="@+id/btn_flag4"
-            style="@style/FlagTextView"
+            style="@style/FlagButtonView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"

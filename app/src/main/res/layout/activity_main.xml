@@ -9,21 +9,21 @@
 
     <Button
         android:id="@+id/btn_quizFlag2Name"
-        style="@style/FlagTextView"
+        style="@style/FlagButtonView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Flag >> Name" />
 
     <Button
         android:id="@+id/btn_quizName2Flag"
-        style="@style/FlagTextView"
+        style="@style/FlagButtonView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name >> Flag" />
 
     <Button
         android:id="@+id/btn_quizFlag2Map"
-        style="@style/FlagTextView"
+        style="@style/FlagButtonView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Flag >> Map" />
