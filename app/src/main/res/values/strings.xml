@@ -204,5 +204,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="score">You scored %d points.</string>
-    <string name="title_activity_maps">Map</string>
+
+    <!-- Content Descriptions -->
+    <string name="flagAsked">Asked flag</string>
+    <string name="flag1">Flag 1</string>
+    <string name="flag2">Flag 2</string>
+    <string name="flag3">Flag 3</string>
+    <string name="flag4">Flag 4</string>
 </resources>

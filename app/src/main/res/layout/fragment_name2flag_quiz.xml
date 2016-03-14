@@ -10,12 +10,13 @@
         style="@style/FlagTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Flag asked"/>
+        android:text="@string/flagAsked" />
 
     <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp">
 
         <ImageButton
             android:id="@+id/btn_flag1"
@@ -24,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_row="0"
+            android:contentDescription="@string/flag1"
             android:src="@drawable/ad" />
 
         <ImageButton
@@ -33,6 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_column="1"
             android:layout_row="0"
+            android:contentDescription="@string/flag2"
             android:src="@drawable/fi" />
 
         <ImageButton
@@ -42,6 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_row="1"
+            android:contentDescription="@string/flag3"
             android:src="@drawable/ch" />
 
         <ImageButton
@@ -51,6 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_column="1"
             android:layout_row="1"
+            android:contentDescription="@string/flag4"
             android:src="@drawable/pa" />
     </GridLayout>
 </LinearLayout>
