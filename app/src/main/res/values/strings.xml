@@ -203,7 +203,14 @@
     <string name="zimbabwe">Zimbabwe</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="score">You scored %d points.</string>
+    <string name="empty" />
+    <string name="you_scored">You scored</string>
+    <string name="score">%d points</string>
+    <string name="comment_0">Oh come on! I\'m sure you can do better than that. Did you fall asleep? Application crashed? Drunk?</string>
+    <string name="comment_1">Hmmm, I think there\'s room for improvement.</string>
+    <string name="comment_2">OK we\'re getting there.</string>
+    <string name="comment_3">Not bad, not bad at all!</string>
+    <string name="comment_4">It\'s safe to say you reached "Sheldon Cooper" level</string>
 
     <!-- Content Descriptions -->
     <string name="flagAsked">Asked flag</string>

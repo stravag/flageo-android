@@ -24,6 +24,9 @@ public class QuizResultFragment extends Fragment {
     @Bind(R.id.txt_score)
     TextView scoreView;
 
+    @Bind(R.id.txt_comment)
+    TextView commentView;
+
     private int score;
 
     /**
@@ -53,10 +56,22 @@ public class QuizResultFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View fragmentLayout = inflater.inflate(R.layout.fragment_quiz_score, container, false);
+        View fragmentLayout = inflater.inflate(R.layout.fragment_quiz_result, container, false);
         ButterKnife.bind(this, fragmentLayout);
 
         scoreView.setText(getActivity().getString(R.string.score, score));
+
+        if (score > 60) {
+            commentView.setText(R.string.comment_4);
+        } else if (score > 40) {
+            commentView.setText(R.string.comment_3);
+        } else if (score > 20) {
+            commentView.setText(R.string.comment_2);
+        } else if (score > 5) {
+            commentView.setText(R.string.comment_1);
+        } else if (score == 0) {
+            commentView.setText(R.string.comment_0);
+        }
 
         return fragmentLayout;
     }
