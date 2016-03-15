@@ -98,13 +98,16 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
         switch (mode) {
             case MODE_FLAG_TO_NAME:
                 quizFragment = Flag2NameQuizFragment.newInstance(NUMBER_OF_CHOICES);
+                setTitle(R.string.mode_flag2name);
                 break;
             case MODE_FLAG_TO_MAP:
                 quizFragment = Flag2MapQuizFragment.newInstance();
+                setTitle(R.string.mode_flag2map);
                 break;
             case MODE_NAME_TO_FLAG:
             default:
                 quizFragment = Name2FlagQuizFragment.newInstance(NUMBER_OF_CHOICES);
+                setTitle(R.string.mode_name2flag);
         }
 
         getFragmentManager()

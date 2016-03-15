@@ -1,5 +1,12 @@
 <resources>
-    <string name="app_name">Geo Flag Quiz</string>
+    <string name="app_name">Flageo</string>
+    <string name="mode_flag2name">Country by Flag</string>
+    <string name="mode_flag2name_description">You have 60s, try and find as many countries as possible. Wrong answer lead to a time penalty.</string>
+    <string name="mode_name2flag">Flag by Country</string>
+    <string name="mode_name2flag_description">You have 60s, try and find as many flags as possible. Wrong answer lead to a time penalty.</string>
+    <string name="mode_flag2map">Country on Map</string>
+    <string name="mode_flag2map_description">You have 60s, find countries on the map, you\'ll get extra time for small countries, but only two chances.</string>
+    <string name="record">Record: %d</string>
 
     <!-- Flags -->
     <string name="afghanistan">Afghanistan</string>
