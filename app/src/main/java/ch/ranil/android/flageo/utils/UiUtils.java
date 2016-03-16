@@ -1,6 +1,7 @@
 package ch.ranil.android.flageo.utils;
 
 import android.graphics.drawable.TransitionDrawable;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
@@ -10,7 +11,7 @@ public class UiUtils {
 
     public static void flashView(final View view, int drawable) {
 
-        TransitionDrawable redFlash = (TransitionDrawable) view.getContext().getResources().getDrawable(drawable);
+        TransitionDrawable redFlash = (TransitionDrawable) ContextCompat.getDrawable(view.getContext(), drawable);
         if (redFlash != null) {
             view.setBackground(redFlash);
             redFlash.startTransition(100);
