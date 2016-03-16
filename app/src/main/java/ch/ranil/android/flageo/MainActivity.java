@@ -3,11 +3,23 @@ package ch.ranil.android.flageo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import ch.ranil.android.flageo.storage.FlageoStorage;
 
 public class MainActivity extends AppCompatActivity {
+
+    @Bind(R.id.txt_flag2Map_record)
+    TextView recordFlag2Map;
+
+    @Bind(R.id.txt_flag2Name_record)
+    TextView recordFlag2Name;
+
+    @Bind(R.id.txt_name2Flag_record)
+    TextView recordName2Flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +27,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        recordFlag2Map.setText(getString(R.string.record, FlageoStorage.getFlag2MapRecord(this)));
+        recordFlag2Name.setText(getString(R.string.record, FlageoStorage.getFlag2NameRecord(this)));
+        recordName2Flag.setText(getString(R.string.record, FlageoStorage.getName2FlagRecord(this)));
     }
 
     @OnClick(R.id.btn_quizFlag2Name)

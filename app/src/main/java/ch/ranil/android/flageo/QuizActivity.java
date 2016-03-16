@@ -16,6 +16,7 @@ import ch.ranil.android.flageo.fragment.Name2FlagQuizFragment;
 import ch.ranil.android.flageo.fragment.QuizListener;
 import ch.ranil.android.flageo.fragment.QuizResultFragment;
 import ch.ranil.android.flageo.model.FlagQuizBuilder;
+import ch.ranil.android.flageo.storage.FlageoStorage;
 
 public class QuizActivity extends AppCompatActivity implements QuizListener {
 
@@ -122,7 +123,22 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
      * Shows the quiz result screen once the timer finished.
      */
     private void showResult() {
-        QuizResultFragment resultFragment = QuizResultFragment.newInstance(score);
+
+        // save record
+        int record;
+        switch (mode) {
+            case MODE_FLAG_TO_NAME:
+                record = FlageoStorage.setFlag2NameRecord(score, this);
+                break;
+            case MODE_FLAG_TO_MAP:
+                record = FlageoStorage.setFlag2MapRecord(score, this);
+                break;
+            case MODE_NAME_TO_FLAG:
+            default:
+                record = FlageoStorage.setName2FlagRecord(score, this);
+        }
+
+        QuizResultFragment resultFragment = QuizResultFragment.newInstance(score, record);
 
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, resultFragment);

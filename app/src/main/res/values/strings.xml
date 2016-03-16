@@ -209,9 +209,10 @@
     <string name="zambia">Zambia</string>
     <string name="zimbabwe">Zimbabwe</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <!-- Scoring Strings -->
     <string name="empty" />
     <string name="you_scored">You scored</string>
+    <string name="you_scored_record">Wohoooo, a new record!</string>
     <string name="score">%d points</string>
     <string name="comment_0">Oh come on! I\'m sure you can do better than that. Did you fall asleep? Application crashed? Drunk?</string>
     <string name="comment_1">Hmmm, I think there\'s room for improvement.</string>
