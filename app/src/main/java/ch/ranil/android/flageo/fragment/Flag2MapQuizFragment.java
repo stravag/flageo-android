@@ -1,10 +1,10 @@
 package ch.ranil.android.flageo.fragment;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -148,12 +148,6 @@ public class Flag2MapQuizFragment extends Fragment {
         } else {
             throw new RuntimeException(context.toString() + " must implement QuizListener");
         }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        quizListener = null;
     }
 
     @Override

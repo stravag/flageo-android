@@ -1,9 +1,9 @@
 package ch.ranil.android.flageo;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ProgressBar;
@@ -111,11 +111,10 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
                 setTitle(R.string.mode_name2flag);
         }
 
-        getFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(R.animator.in, R.animator.out)
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction
+                .setCustomAnimations(R.anim.in, R.anim.out)
                 .replace(R.id.fragment_container, quizFragment, mode)
-                .addToBackStack(null)
                 .commit();
     }
 
@@ -140,9 +139,8 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
 
         QuizResultFragment resultFragment = QuizResultFragment.newInstance(score, record);
 
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, resultFragment);
-        transaction.addToBackStack(null);
 
         transaction.commit();
     }
