@@ -16,6 +16,7 @@ import ch.ranil.android.flageo.fragment.Name2FlagQuizFragment;
 import ch.ranil.android.flageo.fragment.QuizListener;
 import ch.ranil.android.flageo.fragment.QuizResultFragment;
 import ch.ranil.android.flageo.model.FlagQuizBuilder;
+import ch.ranil.android.flageo.model.Mode;
 import ch.ranil.android.flageo.storage.FlageoStorage;
 
 public class QuizActivity extends AppCompatActivity implements QuizListener {
@@ -23,10 +24,6 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
     private static final String TAG = "QuizActivity";
 
     public static final String PARAM_MODE = "mode";
-
-    public static final String MODE_NAME_TO_FLAG = "modeName2Flag";
-    public static final String MODE_FLAG_TO_NAME = "modeFlag2Name";
-    public static final String MODE_FLAG_TO_MAP = "modeFlag2Map";
 
     private static final long TIMER = 60000;
     private static final long TIMER_INTERVAL = 100; // ms
@@ -37,7 +34,7 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
     ProgressBar progressBar;
 
     private int score = 0;
-    private String mode;
+    private Mode mode;
     private CountDownTimer timer;
     private long remainingMillis = TIMER;
 
@@ -49,7 +46,7 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
 
         ButterKnife.bind(this);
 
-        mode = getIntent().getStringExtra(PARAM_MODE);
+        mode = (Mode) getIntent().getSerializableExtra(PARAM_MODE);
 
         // I know, it's potentially dangerous to use the timer scale for the progressbar (long > int)
         // but I guess it's highly unlikely someone boosts the timer above Integer.MAX_VALUE and it makes
@@ -66,6 +63,11 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
     protected void onPause() {
         super.onPause();
         timer.cancel();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     private void startCountdown(final long millisInFuture, final int progressOffset) {
@@ -97,15 +99,15 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
     private void loadQuiz() {
         Fragment quizFragment;
         switch (mode) {
-            case MODE_FLAG_TO_NAME:
+            case FLAG2NAME:
                 quizFragment = Flag2NameQuizFragment.newInstance(NUMBER_OF_CHOICES);
                 setTitle(R.string.mode_flag2name);
                 break;
-            case MODE_FLAG_TO_MAP:
+            case FLAG2MAP:
                 quizFragment = Flag2MapQuizFragment.newInstance();
                 setTitle(R.string.mode_flag2map);
                 break;
-            case MODE_NAME_TO_FLAG:
+            case NAME2FLAG:
             default:
                 quizFragment = Name2FlagQuizFragment.newInstance(NUMBER_OF_CHOICES);
                 setTitle(R.string.mode_name2flag);
@@ -113,8 +115,8 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction
-                .setCustomAnimations(R.anim.in, R.anim.out)
-                .replace(R.id.fragment_container, quizFragment, mode)
+                .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                .replace(R.id.fragment_container, quizFragment, mode.toString())
                 .commit();
     }
 
@@ -126,13 +128,13 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
         // save record
         int record;
         switch (mode) {
-            case MODE_FLAG_TO_NAME:
+            case FLAG2NAME:
                 record = FlageoStorage.setFlag2NameRecord(score, this);
                 break;
-            case MODE_FLAG_TO_MAP:
+            case FLAG2MAP:
                 record = FlageoStorage.setFlag2MapRecord(score, this);
                 break;
-            case MODE_NAME_TO_FLAG:
+            case NAME2FLAG:
             default:
                 record = FlageoStorage.setName2FlagRecord(score, this);
         }

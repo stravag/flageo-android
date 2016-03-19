@@ -1,5 +1,7 @@
 package ch.ranil.android.flageo.model;
 
+import android.content.Context;
+
 import ch.ranil.android.flageo.R;
 
 public enum Flag implements Quizable {
@@ -140,7 +142,7 @@ public enum Flag implements Quizable {
     PANAMA(R.drawable.pa, R.string.panama, 75517),
     PAPUA_NEW_GUINEA(R.drawable.pg, R.string.papua_new_guinea, 462840),
     PARAGUAY(R.drawable.py, R.string.paraguay, 406752),
-    PEOPLES_REPUBLIC_OF_CHINA(R.drawable.cn, R.string.peoples_republic_of_china, 9640820),
+    PEOPLES_REPUBLIC_OF_CHINA(R.drawable.cn, R.string.peoples_republic_of_china, 9640820, "China"),
     PERU(R.drawable.pe, R.string.peru, 1285220),
     PHILIPPINES(R.drawable.ph, R.string.philippines, 300000),
     POLAND(R.drawable.pl, R.string.poland, 312685),
@@ -210,11 +212,19 @@ public enum Flag implements Quizable {
     private int drawable;
     private int translation;
     private long area = REFERENCE_AREA;
+    private String mapName;
 
     Flag(int drawable, int translation, long area) {
         this.drawable = drawable;
         this.translation = translation;
         this.area = area;
+    }
+
+    Flag(int drawable, int translation, long area, String mapName) {
+        this.drawable = drawable;
+        this.translation = translation;
+        this.area = area;
+        this.mapName = mapName;
     }
 
     /**
@@ -227,12 +237,22 @@ public enum Flag implements Quizable {
     }
 
     /**
-     * Translated flag name
+     * Translated flag name.
      *
      * @return string resource id
      */
     public int getTranslation() {
         return translation;
+    }
+
+    /**
+     * The country name returned by geocoding.
+     */
+    public String getMapName(Context context) {
+        if (mapName == null) {
+            return context.getString(translation);
+        }
+        return mapName;
     }
 
     /**

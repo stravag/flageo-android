@@ -8,6 +8,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import ch.ranil.android.flageo.model.Mode;
 import ch.ranil.android.flageo.storage.FlageoStorage;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,20 +42,20 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_quizFlag2Name)
     public void startFlag2NameQuiz() {
-        startQuiz(QuizActivity.MODE_FLAG_TO_NAME);
+        startQuiz(Mode.FLAG2NAME);
     }
 
     @OnClick(R.id.btn_quizFlag2Map)
     public void startFlag2MapQuiz() {
-        startQuiz(QuizActivity.MODE_FLAG_TO_MAP);
+        startQuiz(Mode.FLAG2MAP);
     }
 
     @OnClick(R.id.btn_quizName2Flag)
     public void startName2FlagQuiz() {
-        startQuiz(QuizActivity.MODE_NAME_TO_FLAG);
+        startQuiz(Mode.NAME2FLAG);
     }
 
-    private void startQuiz(String mode) {
+    private void startQuiz(Mode mode) {
         Intent intent = new Intent(this, QuizActivity.class);
         intent.putExtra(QuizActivity.PARAM_MODE, mode);
         startActivity(intent);
