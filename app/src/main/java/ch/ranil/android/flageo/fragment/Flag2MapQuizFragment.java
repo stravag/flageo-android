@@ -9,12 +9,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
@@ -22,10 +25,12 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ch.ranil.android.flageo.R;
 import ch.ranil.android.flageo.cache.BitmapCache;
 import ch.ranil.android.flageo.model.Flag;
 import ch.ranil.android.flageo.model.FlagQuizBuilder;
+import ch.ranil.android.flageo.utils.FlipAnimation;
 import ch.ranil.android.flageo.utils.UiUtils;
 
 /**
@@ -44,13 +49,20 @@ public class Flag2MapQuizFragment extends Fragment {
     @Bind(R.id.flag_container)
     View flagContainer;
 
-    @Bind(R.id.txt_flagAsked)
-    ImageView flagView;
+    @Bind(R.id.flash)
+    View flashView;
+
+    @Bind(R.id.imgbtn_flagAsked)
+    ImageButton flagView;
+
+    @Bind(R.id.btn_flagAsked)
+    Button flagTextView;
 
     @Bind(R.id.map)
     MapView mapView;
 
     private GoogleMap map;
+    private CameraPosition startingPosition;
     private Geocoder geocoder;
     private Flag flag;
     private QuizListener quizListener;
@@ -78,7 +90,6 @@ public class Flag2MapQuizFragment extends Fragment {
         }
 
         geocoder = new Geocoder(getActivity());
-
         quizListener.timeBoost(flag.getTimeBoost());
     }
 
@@ -94,20 +105,17 @@ public class Flag2MapQuizFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 map = googleMap;
+                startingPosition = map.getCameraPosition();
                 map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
-                    public void onMapLongClick(LatLng latLng) {
-                        try {
-                            List<Address> location = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-                            processAnswer(location.get(0).getCountryName());
-                        } catch (IOException e) {
-                            Toast.makeText(getActivity(), "Geocoding error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        } catch (IndexOutOfBoundsException e) {
-                            // Selected location on map without an address
-                            // if this is ever a real country we're officially f*cked
-                            processAnswer("Donaldtrumpia");
-                        }
+                    public void onMapLongClick(final LatLng latLng) {
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                handleMapLongPress(latLng);
+                            }
+                        }.run();
                     }
                 });
             }
@@ -115,9 +123,43 @@ public class Flag2MapQuizFragment extends Fragment {
 
         if (flag != null) {
             BitmapCache.getInstance().loadBitmap(flag.getDrawable(), flagView);
+            flagTextView.setText(flag.getTranslation());
         }
 
         return fragmentLayout;
+    }
+
+    public void loadQuiz() {
+
+        wrongCounter = 0;
+
+        try {
+            flag = FlagQuizBuilder.getInstance().nextUnasked();
+        } catch (FlagQuizBuilder.NothingToQuizException e) {
+            quizListener.answeredAllQuestions();
+            return;
+        }
+
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(startingPosition), 500, null);
+
+        flagView.setVisibility(View.VISIBLE);
+        flagTextView.setVisibility(View.INVISIBLE);
+
+        BitmapCache.getInstance().loadBitmap(flag.getDrawable(), flagView);
+        flagTextView.setText(flag.getTranslation());
+    }
+
+    private void handleMapLongPress(LatLng latLng) {
+        try {
+            List<Address> location = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            processAnswer(location.get(0).getCountryName());
+        } catch (IOException e) {
+            Toast.makeText(getActivity(), "Geocoding error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        } catch (IndexOutOfBoundsException e) {
+            // Selected location on map without an address
+            // if this is ever a real country we're officially f*cked
+            processAnswer("Donaldtrumpia");
+        }
     }
 
     /**
@@ -127,17 +169,27 @@ public class Flag2MapQuizFragment extends Fragment {
      */
     private void processAnswer(String countryName) {
         Log.d(TAG, countryName);
-        boolean correct = getString(flag.getTranslation()).equals(countryName);
+        boolean correct = flag.getMapName(getActivity()).equals(countryName);
         if (!correct) {
-            UiUtils.flashView(flagContainer, R.drawable.flash_red);
+            UiUtils.flashView(flashView, R.drawable.flash_red);
             quizListener.timeBoost(++wrongCounter * WRONG_PENALTY);
             if (wrongCounter >= MAX_WRONG_COUNTER) {
                 quizListener.quizAnswered(false);
             }
         } else {
-            UiUtils.flashView(flagContainer, R.drawable.flash_green);
+            UiUtils.flashView(flashView, R.drawable.flash_green);
             quizListener.quizAnswered(true);
         }
+    }
+
+    @OnClick(R.id.imgbtn_flagAsked)
+    public void flipFlagImage() {
+        flagContainer.startAnimation(new FlipAnimation(flagView, flagTextView));
+    }
+
+    @OnClick(R.id.btn_flagAsked)
+    public void flipFlagText() {
+        flagContainer.startAnimation(new FlipAnimation(flagTextView, flagView));
     }
 
     @Override
