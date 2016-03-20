@@ -35,9 +35,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        recordFlag2Map.setText(getString(R.string.record, FlageoStorage.getFlag2MapRecord(this)));
-        recordFlag2Name.setText(getString(R.string.record, FlageoStorage.getFlag2NameRecord(this)));
-        recordName2Flag.setText(getString(R.string.record, FlageoStorage.getName2FlagRecord(this)));
+        recordFlag2Map.setText(getString(R.string.record, FlageoStorage.getRecord(Mode.FLAG2MAP, this)));
+        recordFlag2Name.setText(getString(R.string.record, FlageoStorage.getRecord(Mode.NAME2FLAG, this)));
+        recordName2Flag.setText(getString(R.string.record, FlageoStorage.getRecord(Mode.NAME2FLAG, this)));
     }
 
     @OnClick(R.id.btn_quizFlag2Name)

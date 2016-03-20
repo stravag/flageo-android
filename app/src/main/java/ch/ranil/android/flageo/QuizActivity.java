@@ -126,19 +126,7 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
     private void showResult() {
 
         // save record
-        int record;
-        switch (mode) {
-            case FLAG2NAME:
-                record = FlageoStorage.setFlag2NameRecord(score, this);
-                break;
-            case FLAG2MAP:
-                record = FlageoStorage.setFlag2MapRecord(score, this);
-                break;
-            case NAME2FLAG:
-            default:
-                record = FlageoStorage.setName2FlagRecord(score, this);
-        }
-
+        int record = FlageoStorage.setRecord(score, mode, this);
         QuizResultFragment resultFragment = QuizResultFragment.newInstance(score, record);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
