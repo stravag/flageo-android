@@ -13,9 +13,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
@@ -60,10 +62,10 @@ public class Flag2MapQuizFragment extends Fragment {
     MapView mapView;
 
     private GoogleMap map;
+    private CameraPosition startingPosition;
     private Geocoder geocoder;
     private Flag flag;
     private QuizListener quizListener;
-    private FlipAnimation flipAnimation;
 
     private int wrongCounter;
 
@@ -88,7 +90,6 @@ public class Flag2MapQuizFragment extends Fragment {
         }
 
         geocoder = new Geocoder(getActivity());
-
         quizListener.timeBoost(flag.getTimeBoost());
     }
 
@@ -99,13 +100,12 @@ public class Flag2MapQuizFragment extends Fragment {
         View fragmentLayout = inflater.inflate(R.layout.fragment_flag2map_quiz, container, false);
         ButterKnife.bind(this, fragmentLayout);
 
-        flipAnimation = new FlipAnimation(flagView, flagTextView);
-
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 map = googleMap;
+                startingPosition = map.getCameraPosition();
                 map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
@@ -127,6 +127,26 @@ public class Flag2MapQuizFragment extends Fragment {
         }
 
         return fragmentLayout;
+    }
+
+    public void loadQuiz() {
+
+        wrongCounter = 0;
+
+        try {
+            flag = FlagQuizBuilder.getInstance().nextUnasked();
+        } catch (FlagQuizBuilder.NothingToQuizException e) {
+            quizListener.answeredAllQuestions();
+            return;
+        }
+
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(startingPosition), 500, null);
+
+        flagView.setVisibility(View.VISIBLE);
+        flagTextView.setVisibility(View.INVISIBLE);
+
+        BitmapCache.getInstance().loadBitmap(flag.getDrawable(), flagView);
+        flagTextView.setText(flag.getTranslation());
     }
 
     private void handleMapLongPress(LatLng latLng) {
@@ -164,19 +184,12 @@ public class Flag2MapQuizFragment extends Fragment {
 
     @OnClick(R.id.imgbtn_flagAsked)
     public void flipFlagImage() {
-        flipFlag();
+        flagContainer.startAnimation(new FlipAnimation(flagView, flagTextView));
     }
 
     @OnClick(R.id.btn_flagAsked)
     public void flipFlagText() {
-        flipFlag();
-    }
-
-    private void flipFlag() {
-//        if (flagView.getVisibility() == View.INVISIBLE) {
-//            flipAnimation.reverse();
-//        }
-        flagContainer.startAnimation(flipAnimation);
+        flagContainer.startAnimation(new FlipAnimation(flagTextView, flagView));
     }
 
     @Override

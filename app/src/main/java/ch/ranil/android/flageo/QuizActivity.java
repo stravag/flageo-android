@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ProgressBar;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.ranil.android.flageo.fragment.Flag2MapQuizFragment;
@@ -37,6 +40,8 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
     private Mode mode;
     private CountDownTimer timer;
     private long remainingMillis = TIMER;
+
+    private Map<Mode, Fragment> fragments = new HashMap<>(Mode.values().length);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,27 +102,41 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
      * Loads and shows the next quiz fragment.
      */
     private void loadQuiz() {
-        Fragment quizFragment;
-        switch (mode) {
-            case FLAG2NAME:
-                quizFragment = Flag2NameQuizFragment.newInstance(NUMBER_OF_CHOICES);
-                setTitle(R.string.mode_flag2name);
-                break;
-            case FLAG2MAP:
-                quizFragment = Flag2MapQuizFragment.newInstance();
-                setTitle(R.string.mode_flag2map);
-                break;
-            case NAME2FLAG:
-            default:
-                quizFragment = Name2FlagQuizFragment.newInstance(NUMBER_OF_CHOICES);
-                setTitle(R.string.mode_name2flag);
-        }
+        Fragment quizFragment = getFragment(mode);
+        setTitle(mode.getTitle());
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction
                 .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
                 .replace(R.id.fragment_container, quizFragment, mode.toString())
                 .commit();
+    }
+
+    /**
+     * Get the fragment, use cached variant if available.
+     *
+     * @param mode quiz mode
+     * @return quiz fragment
+     */
+    private Fragment getFragment(Mode mode) {
+        Fragment fragment = fragments.get(mode);
+        if (fragment == null) {
+            switch (mode) {
+                case FLAG2NAME:
+                    fragment = Flag2NameQuizFragment.newInstance(NUMBER_OF_CHOICES);
+                    break;
+                case FLAG2MAP:
+                    fragment = Flag2MapQuizFragment.newInstance();
+                    fragments.put(mode, fragment);
+                    break;
+                case NAME2FLAG:
+                    fragment = Name2FlagQuizFragment.newInstance(NUMBER_OF_CHOICES);
+            }
+        } else if (fragment instanceof Flag2MapQuizFragment) {
+            ((Flag2MapQuizFragment) fragment).loadQuiz();
+        }
+
+        return fragment;
     }
 
     /**
