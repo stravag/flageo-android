@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ProgressBar;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.ranil.android.flageo.fragment.Flag2MapQuizFragment;
@@ -16,6 +19,7 @@ import ch.ranil.android.flageo.fragment.Name2FlagQuizFragment;
 import ch.ranil.android.flageo.fragment.QuizListener;
 import ch.ranil.android.flageo.fragment.QuizResultFragment;
 import ch.ranil.android.flageo.model.FlagQuizBuilder;
+import ch.ranil.android.flageo.model.Mode;
 import ch.ranil.android.flageo.storage.FlageoStorage;
 
 public class QuizActivity extends AppCompatActivity implements QuizListener {
@@ -23,10 +27,6 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
     private static final String TAG = "QuizActivity";
 
     public static final String PARAM_MODE = "mode";
-
-    public static final String MODE_NAME_TO_FLAG = "modeName2Flag";
-    public static final String MODE_FLAG_TO_NAME = "modeFlag2Name";
-    public static final String MODE_FLAG_TO_MAP = "modeFlag2Map";
 
     private static final long TIMER = 60000;
     private static final long TIMER_INTERVAL = 100; // ms
@@ -37,9 +37,11 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
     ProgressBar progressBar;
 
     private int score = 0;
-    private String mode;
+    private Mode mode;
     private CountDownTimer timer;
     private long remainingMillis = TIMER;
+
+    private Map<Mode, Fragment> fragments = new HashMap<>(Mode.values().length);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,7 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
 
         ButterKnife.bind(this);
 
-        mode = getIntent().getStringExtra(PARAM_MODE);
+        mode = (Mode) getIntent().getSerializableExtra(PARAM_MODE);
 
         // I know, it's potentially dangerous to use the timer scale for the progressbar (long > int)
         // but I guess it's highly unlikely someone boosts the timer above Integer.MAX_VALUE and it makes
@@ -66,6 +68,11 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
     protected void onPause() {
         super.onPause();
         timer.cancel();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     private void startCountdown(final long millisInFuture, final int progressOffset) {
@@ -95,27 +102,41 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
      * Loads and shows the next quiz fragment.
      */
     private void loadQuiz() {
-        Fragment quizFragment;
-        switch (mode) {
-            case MODE_FLAG_TO_NAME:
-                quizFragment = Flag2NameQuizFragment.newInstance(NUMBER_OF_CHOICES);
-                setTitle(R.string.mode_flag2name);
-                break;
-            case MODE_FLAG_TO_MAP:
-                quizFragment = Flag2MapQuizFragment.newInstance();
-                setTitle(R.string.mode_flag2map);
-                break;
-            case MODE_NAME_TO_FLAG:
-            default:
-                quizFragment = Name2FlagQuizFragment.newInstance(NUMBER_OF_CHOICES);
-                setTitle(R.string.mode_name2flag);
-        }
+        Fragment quizFragment = getFragment(mode);
+        setTitle(mode.getTitle());
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction
-                .setCustomAnimations(R.anim.in, R.anim.out)
-                .replace(R.id.fragment_container, quizFragment, mode)
+                .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                .replace(R.id.fragment_container, quizFragment, mode.toString())
                 .commit();
+    }
+
+    /**
+     * Get the fragment, use cached variant if available.
+     *
+     * @param mode quiz mode
+     * @return quiz fragment
+     */
+    private Fragment getFragment(Mode mode) {
+        Fragment fragment = fragments.get(mode);
+        if (fragment == null) {
+            switch (mode) {
+                case FLAG2NAME:
+                    fragment = Flag2NameQuizFragment.newInstance(NUMBER_OF_CHOICES);
+                    break;
+                case FLAG2MAP:
+                    fragment = Flag2MapQuizFragment.newInstance();
+                    fragments.put(mode, fragment);
+                    break;
+                case NAME2FLAG:
+                    fragment = Name2FlagQuizFragment.newInstance(NUMBER_OF_CHOICES);
+            }
+        } else if (fragment instanceof Flag2MapQuizFragment) {
+            ((Flag2MapQuizFragment) fragment).loadQuiz();
+        }
+
+        return fragment;
     }
 
     /**
@@ -124,20 +145,8 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
     private void showResult() {
 
         // save record
-        int record;
-        switch (mode) {
-            case MODE_FLAG_TO_NAME:
-                record = FlageoStorage.setFlag2NameRecord(score, this);
-                break;
-            case MODE_FLAG_TO_MAP:
-                record = FlageoStorage.setFlag2MapRecord(score, this);
-                break;
-            case MODE_NAME_TO_FLAG:
-            default:
-                record = FlageoStorage.setName2FlagRecord(score, this);
-        }
-
-        QuizResultFragment resultFragment = QuizResultFragment.newInstance(score, record);
+        int record = FlageoStorage.setRecord(score, mode, this);
+        QuizResultFragment resultFragment = QuizResultFragment.newInstance(score, record, mode);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, resultFragment);
