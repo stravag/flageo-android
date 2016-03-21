@@ -11,6 +11,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.ranil.android.flageo.R;
+import ch.ranil.android.flageo.model.Mode;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +22,7 @@ public class QuizResultFragment extends Fragment {
 
     private static final String PARAM_SCORE = "score";
     private static final String PARAM_RECORD = "record";
+    private static final String PARAM_MODE = "mode";
 
     @Bind(R.id.txt_scoreIntro)
     TextView scoreIntro;
@@ -33,6 +35,7 @@ public class QuizResultFragment extends Fragment {
 
     private int score;
     private int record;
+    private Mode mode;
 
     /**
      * Use this factory method to create a new instance of
@@ -40,11 +43,12 @@ public class QuizResultFragment extends Fragment {
      *
      * @return A new instance of fragment QuizResultFragment.
      */
-    public static QuizResultFragment newInstance(int score, int record) {
+    public static QuizResultFragment newInstance(int score, int record, Mode mode) {
         QuizResultFragment fragment = new QuizResultFragment();
         Bundle args = new Bundle();
         args.putInt(PARAM_SCORE, score);
         args.putInt(PARAM_RECORD, record);
+        args.putSerializable(PARAM_MODE, mode);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,6 +59,7 @@ public class QuizResultFragment extends Fragment {
         if (getArguments() != null) {
             score = getArguments().getInt(PARAM_SCORE);
             record = getArguments().getInt(PARAM_RECORD);
+            mode = (Mode) getArguments().getSerializable(PARAM_MODE);
         }
     }
 
@@ -71,9 +76,14 @@ public class QuizResultFragment extends Fragment {
         }
         scoreView.setText(getActivity().getString(R.string.score, score));
 
+        // Adjust scoring feedback to mode
+        if (mode == Mode.FLAG2MAP) {
+            score /= 4;
+        }
+
         if (score >= 50) {
             commentView.setText(R.string.comment_4);
-        } else if (score > 30) {
+        } else if (score >= 30) {
             commentView.setText(R.string.comment_3);
         } else if (score >= 15) {
             commentView.setText(R.string.comment_2);

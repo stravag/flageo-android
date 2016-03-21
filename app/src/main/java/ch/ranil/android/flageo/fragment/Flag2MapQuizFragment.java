@@ -83,15 +83,7 @@ public class Flag2MapQuizFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        try {
-            flag = FlagQuizBuilder.getInstance().nextUnasked();
-        } catch (FlagQuizBuilder.NothingToQuizException e) {
-            quizListener.answeredAllQuestions();
-            return;
-        }
-
         geocoder = new Geocoder(getActivity(), Locale.ENGLISH);
-        quizListener.timeBoost(flag.getTimeBoost());
     }
 
     @Override
@@ -122,10 +114,7 @@ public class Flag2MapQuizFragment extends Fragment {
             }
         });
 
-        if (flag != null) {
-            BitmapCache.getInstance().loadBitmap(flag.getDrawable(), flagView);
-            flagTextView.setText(flag.getTranslation());
-        }
+        loadQuiz();
 
         return fragmentLayout;
     }
@@ -136,12 +125,15 @@ public class Flag2MapQuizFragment extends Fragment {
 
         try {
             flag = FlagQuizBuilder.getInstance().nextUnasked();
+            quizListener.timeBoost(flag.getTimeBoost());
         } catch (FlagQuizBuilder.NothingToQuizException e) {
             quizListener.answeredAllQuestions();
             return;
         }
 
-        map.animateCamera(CameraUpdateFactory.newCameraPosition(startingPosition), 500, null);
+        if (map != null) {
+            map.animateCamera(CameraUpdateFactory.newCameraPosition(startingPosition), 500, null);
+        }
 
         flagView.setVisibility(View.VISIBLE);
         flagTextView.setVisibility(View.INVISIBLE);

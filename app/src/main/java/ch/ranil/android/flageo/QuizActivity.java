@@ -146,7 +146,7 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
 
         // save record
         int record = FlageoStorage.setRecord(score, mode, this);
-        QuizResultFragment resultFragment = QuizResultFragment.newInstance(score, record);
+        QuizResultFragment resultFragment = QuizResultFragment.newInstance(score, record, mode);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, resultFragment);
