@@ -9,13 +9,20 @@ import android.view.animation.TranslateAnimation;
 
 public class UiUtils {
 
+    private UiUtils() {}
+
+    /**
+     * Flashes the background of the given view in the given transition drawable.
+     * @param view view
+     * @param drawable transition drawable
+     */
     public static void flashView(final View view, int drawable) {
 
-        TransitionDrawable redFlash = (TransitionDrawable) ContextCompat.getDrawable(view.getContext(), drawable);
-        if (redFlash != null) {
-            view.setBackground(redFlash);
-            redFlash.startTransition(100);
-            redFlash.reverseTransition(100);
+        TransitionDrawable flash = (TransitionDrawable) ContextCompat.getDrawable(view.getContext(), drawable);
+        if (flash != null) {
+            view.setBackground(flash);
+            flash.startTransition(100);
+            flash.reverseTransition(100);
         }
     }
 

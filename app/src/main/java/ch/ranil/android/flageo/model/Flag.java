@@ -1,5 +1,7 @@
 package ch.ranil.android.flageo.model;
 
+import android.content.Context;
+
 import ch.ranil.android.flageo.R;
 
 public enum Flag implements Quizable {
@@ -15,7 +17,7 @@ public enum Flag implements Quizable {
     AUSTRALIA(R.drawable.au, R.string.australia, 7741220),
     AUSTRIA(R.drawable.at, R.string.austria, 83858),
     AZERBAIJAN(R.drawable.az, R.string.azerbaijan, 86600),
-    BAHAMAS(R.drawable.bs, R.string.bahamas, 13878),
+    BAHAMAS(R.drawable.bs, R.string.bahamas, 13878, "The Bahamas"),
     BAHRAIN(R.drawable.bh, R.string.bahrain, 694),
     BANGLADESH(R.drawable.bd, R.string.bangladesh, 143998),
     BARBADOS(R.drawable.bb, R.string.barbados, 430),
@@ -43,7 +45,7 @@ public enum Flag implements Quizable {
     COMOROS(R.drawable.km, R.string.comoros, 2235),
     //COOK_ISLANDS(R.drawable.ck, R.string.cook_islands, 240),
     COSTA_RICA(R.drawable.cr, R.string.costa_rica, 51100),
-    COTE_DIVOIRE(R.drawable.ci, R.string.cote_divoire, 322463),
+    COTE_DIVOIRE(R.drawable.ci, R.string.cote_divoire, 322463, "Côte d'Ivoire"),
     CROATIA(R.drawable.hr, R.string.croatia, 56538),
     CUBA(R.drawable.cu, R.string.cuba, 110861),
     CYPRUS(R.drawable.cy, R.string.cyprus, 9251),
@@ -140,7 +142,7 @@ public enum Flag implements Quizable {
     PANAMA(R.drawable.pa, R.string.panama, 75517),
     PAPUA_NEW_GUINEA(R.drawable.pg, R.string.papua_new_guinea, 462840),
     PARAGUAY(R.drawable.py, R.string.paraguay, 406752),
-    PEOPLES_REPUBLIC_OF_CHINA(R.drawable.cn, R.string.peoples_republic_of_china, 9640820),
+    PEOPLES_REPUBLIC_OF_CHINA(R.drawable.cn, R.string.peoples_republic_of_china, 9640820, "China"),
     PERU(R.drawable.pe, R.string.peru, 1285220),
     PHILIPPINES(R.drawable.ph, R.string.philippines, 300000),
     POLAND(R.drawable.pl, R.string.poland, 312685),
@@ -206,15 +208,24 @@ public enum Flag implements Quizable {
     ;
 
     private final static long REFERENCE_AREA = 17098242;
+    private final static long MAX_BOOST = 10000;
 
     private int drawable;
     private int translation;
     private long area = REFERENCE_AREA;
+    private String mapName;
 
     Flag(int drawable, int translation, long area) {
         this.drawable = drawable;
         this.translation = translation;
         this.area = area;
+    }
+
+    Flag(int drawable, int translation, long area, String mapName) {
+        this.drawable = drawable;
+        this.translation = translation;
+        this.area = area;
+        this.mapName = mapName;
     }
 
     /**
@@ -227,12 +238,22 @@ public enum Flag implements Quizable {
     }
 
     /**
-     * Translated flag name
+     * Translated flag name.
      *
      * @return string resource id
      */
     public int getTranslation() {
         return translation;
+    }
+
+    /**
+     * The country name returned by geocoding.
+     */
+    public String getMapName(Context context) {
+        if (mapName == null) {
+            return context.getString(translation);
+        }
+        return mapName;
     }
 
     /**
@@ -242,6 +263,6 @@ public enum Flag implements Quizable {
      * @return boost time in ms
      */
     public long getTimeBoost() {
-        return Math.min(REFERENCE_AREA / area * 10, 8000);
+        return Math.min(REFERENCE_AREA / area * 10, MAX_BOOST);
     }
 }
