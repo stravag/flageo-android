@@ -208,6 +208,7 @@ public enum Flag implements Quizable {
     ;
 
     private final static long REFERENCE_AREA = 17098242;
+    private final static long MAX_BOOST = 10000;
 
     private int drawable;
     private int translation;
@@ -262,6 +263,6 @@ public enum Flag implements Quizable {
      * @return boost time in ms
      */
     public long getTimeBoost() {
-        return Math.min(REFERENCE_AREA / area * 10, 8000);
+        return Math.min(REFERENCE_AREA / area * 10, MAX_BOOST);
     }
 }

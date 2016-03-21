@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -89,7 +90,7 @@ public class Flag2MapQuizFragment extends Fragment {
             return;
         }
 
-        geocoder = new Geocoder(getActivity());
+        geocoder = new Geocoder(getActivity(), Locale.ENGLISH);
         quizListener.timeBoost(flag.getTimeBoost());
     }
 
