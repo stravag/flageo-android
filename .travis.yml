@@ -1,5 +1,17 @@
 language: android
+
 jdk: oraclejdk7
+
+cache:
+  directories:
+   - node_modules
+
+sudo: false
+
+notifications:
+  email:
+    - me@ranil.ch
+
 android:
   components:
     # Uncomment the lines below if you want to
