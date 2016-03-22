@@ -3,6 +3,7 @@ package ch.ranil.android.flageo.fragment;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -102,13 +103,14 @@ public class Flag2MapQuizFragment extends Fragment {
                 map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
-                    public void onMapLongClick(final LatLng latLng) {
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                handleMapLongPress(latLng);
-                            }
-                        }.run();
+                    public void onMapLongClick(LatLng latLng) {
+                        new GeocodingTask().execute(latLng);
+                    }
+                });
+                map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng latLng) {
+                        new GeocodingTask().execute(latLng);
                     }
                 });
             }
@@ -117,6 +119,13 @@ public class Flag2MapQuizFragment extends Fragment {
         loadQuiz();
 
         return fragmentLayout;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // start timer when fragment is ready
+        quizListener.timeBoost(0);
     }
 
     public void loadQuiz() {
@@ -142,26 +151,13 @@ public class Flag2MapQuizFragment extends Fragment {
         flagTextView.setText(flag.getTranslation());
     }
 
-    private void handleMapLongPress(LatLng latLng) {
-        try {
-            List<Address> location = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-            processAnswer(location.get(0).getCountryName());
-        } catch (IOException e) {
-            Toast.makeText(getActivity(), "Geocoding error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        } catch (IndexOutOfBoundsException e) {
-            // Selected location on map without an address
-            // if this is ever a real country we're officially f*cked
-            processAnswer("Donaldtrumpia");
-        }
-    }
-
     /**
      * Check if the selected answer is correct and send info back to activity.
      *
      * @param countryName selected country
      */
     private void processAnswer(String countryName) {
-        Log.d(TAG, countryName);
+        Log.d(TAG, "Selected country: " + countryName);
         boolean correct = flag.getMapName(getActivity()).equals(countryName);
         if (!correct) {
             UiUtils.flashView(flashView, R.drawable.flash_red);
@@ -217,5 +213,36 @@ public class Flag2MapQuizFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
+    }
+
+    private class GeocodingTask extends AsyncTask<LatLng, String, String> {
+
+        private long startTime;
+
+        @Override
+        protected String doInBackground(LatLng... params) {
+            Log.d(TAG, "GeocodingTask started...");
+            startTime = System.currentTimeMillis();
+            LatLng latLng = params[0];
+            try {
+                List<Address> location = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                return location.get(0).getCountryName();
+            } catch (IOException e) {
+                Toast.makeText(getActivity(), "Geocoding error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                return null;
+            } catch (IndexOutOfBoundsException e) {
+                // Selected location on map without an address
+                // if this is ever a real country we're officially f*cked
+                return "Donaldtrumpia";
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Log.d(TAG, String.format("GeocodingTask finished in %dms", System.currentTimeMillis() - startTime));
+            if (s != null) {
+                processAnswer(s);
+            }
+        }
     }
 }

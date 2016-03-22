@@ -1,12 +1,21 @@
 package ch.ranil.android.flageo.fragment;
 
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import org.apache.commons.io.IOUtils;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -76,24 +85,37 @@ public class QuizResultFragment extends Fragment {
         }
         scoreView.setText(getActivity().getString(R.string.score, score));
 
-        // Adjust scoring feedback to mode
-        if (mode == Mode.FLAG2MAP) {
-            score /= 4;
-        }
-
-        if (score >= 50) {
-            commentView.setText(R.string.comment_4);
-        } else if (score >= 30) {
-            commentView.setText(R.string.comment_3);
-        } else if (score >= 15) {
-            commentView.setText(R.string.comment_2);
-        } else if (score > 5) {
-            commentView.setText(R.string.comment_1);
-        } else if (score == 0) {
-            commentView.setText(R.string.comment_0);
-        }
+        new NumbersApiTask().execute(score);
 
         return fragmentLayout;
     }
 
+    private class NumbersApiTask extends AsyncTask<Integer, String, String> {
+
+        @Override
+        protected String doInBackground(Integer... params) {
+
+            URL url;
+            HttpURLConnection conn;
+
+            try {
+                url = new URL("http://numbersapi.com/" + params[0]);
+                conn = (HttpURLConnection) url.openConnection();
+            } catch (IOException e) {
+                return "";
+            }
+
+            try (InputStream in = new BufferedInputStream(conn.getInputStream())) {
+                conn.setRequestMethod("POST");
+                return IOUtils.toString(in, "UTF-8");
+            } catch (IOException e) {
+                return "";
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            commentView.setText(s);
+        }
+    }
 }
