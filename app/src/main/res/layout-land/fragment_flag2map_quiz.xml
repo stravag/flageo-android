@@ -1,32 +1,42 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:background="@color/background"
-    android:gravity="center"
-    android:orientation="horizontal">
-
-    <FrameLayout
-        android:id="@+id/flag_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp">
-
-        <ImageView
-            android:id="@+id/txt_flagAsked"
-            style="@style/FlagImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:contentDescription="@string/flagAsked"
-            android:src="@drawable/ch"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    </FrameLayout>
+    android:layout_gravity="start">
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</LinearLayout>
+    <FrameLayout
+        android:id="@+id/flag_container"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:padding="10dp">
+
+        <ImageButton
+            android:id="@+id/imgbtn_flagAsked"
+            style="@style/FlagImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/flagAsked"
+            android:src="@drawable/ch"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <Button
+            android:id="@+id/btn_flagAsked"
+            style="@style/FlagTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="invisible" />
+
+    </FrameLayout>
+
+    <View
+        android:id="@+id/flash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</FrameLayout>

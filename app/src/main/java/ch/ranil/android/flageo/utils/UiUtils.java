@@ -21,8 +21,8 @@ public class UiUtils {
         TransitionDrawable flash = (TransitionDrawable) ContextCompat.getDrawable(view.getContext(), drawable);
         if (flash != null) {
             view.setBackground(flash);
-            flash.startTransition(100);
-            flash.reverseTransition(100);
+            flash.startTransition(150);
+            flash.reverseTransition(150);
         }
     }
 
