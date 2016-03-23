@@ -78,7 +78,6 @@ public class Name2FlagQuizFragment extends Fragment {
 
         flagButtons = new ImageButton[numberOfChoices];
 
-        // TODO add dynamically to layout
         flagButtons[0] = (ImageButton) fragmentLayout.findViewById(R.id.btn_flag1);
         flagButtons[1] = (ImageButton) fragmentLayout.findViewById(R.id.btn_flag2);
         flagButtons[2] = (ImageButton) fragmentLayout.findViewById(R.id.btn_flag3);
@@ -93,6 +92,13 @@ public class Name2FlagQuizFragment extends Fragment {
         }
 
         return fragmentLayout;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // start timer when fragment is ready
+        quizListener.timeBoost(0);
     }
 
     /**

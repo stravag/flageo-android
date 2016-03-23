@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/background"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/txt_flagAsked"
+        style="@style/FlagTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/flagAsked" />
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <ImageButton
+            android:id="@+id/btn_flag1"
+            style="@style/FlagImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="0"
+            android:contentDescription="@string/flag1"
+            android:src="@drawable/ad" />
+
+        <ImageButton
+            android:id="@+id/btn_flag2"
+            style="@style/FlagImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_row="0"
+            android:contentDescription="@string/flag2"
+            android:src="@drawable/fi" />
+
+        <ImageButton
+            android:id="@+id/btn_flag3"
+            style="@style/FlagImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="1"
+            android:contentDescription="@string/flag3"
+            android:src="@drawable/ch" />
+
+        <ImageButton
+            android:id="@+id/btn_flag4"
+            style="@style/FlagImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_row="1"
+            android:contentDescription="@string/flag4"
+            android:src="@drawable/pa" />
+    </GridLayout>
+</LinearLayout>

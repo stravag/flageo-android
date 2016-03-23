@@ -1,5 +1,7 @@
 package ch.ranil.android.flageo;
 
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
@@ -47,6 +49,15 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+        }
+
         setContentView(R.layout.activity_quiz);
 
         ButterKnife.bind(this);
@@ -61,18 +72,12 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
 
         FlagQuizBuilder.newInstance();
         loadQuiz();
-        startCountdown(TIMER, 0);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         timer.cancel();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     private void startCountdown(final long millisInFuture, final int progressOffset) {
@@ -85,12 +90,12 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
             public void onTick(long millisUntilFinished) {
                 remainingMillis = millisUntilFinished;
                 int progress = (int) (millisInFuture - millisUntilFinished) + progressOffset;
-//                Log.d(TAG, String.format("%d / %d, progress=%d", millisUntilFinished, millisInFuture, progressBar.getProgress()));
                 progressBar.setProgress(progress);
             }
 
             @Override
             public void onFinish() {
+                Log.d(TAG, String.format("timer finished (remainingMillis = %d, progress = %d)", remainingMillis, progressBar.getProgress()));
                 progressBar.setProgress(progressBar.getMax());
                 showResult();
             }
@@ -169,14 +174,19 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
 
     @Override
     public void timeBoost(long addedMillis) {
-        timer.cancel();
+        Log.d(TAG, String.format("boosting countdown by %dms", addedMillis));
+        if (timer != null) {
+            timer.cancel();
+        }
         progressBar.setMax((int) (progressBar.getMax() + addedMillis));
         startCountdown(remainingMillis + addedMillis, progressBar.getProgress());
     }
 
     @Override
     public void answeredAllQuestions() {
-        timer.cancel();
-        timer.onFinish();
+        if (timer != null) {
+            timer.cancel();
+            timer.onFinish();
+        }
     }
 }
