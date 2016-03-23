@@ -34,6 +34,14 @@
 
     </FrameLayout>
 
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:visibility="gone" />
+
     <View
         android:id="@+id/flash"
         android:layout_width="match_parent"
