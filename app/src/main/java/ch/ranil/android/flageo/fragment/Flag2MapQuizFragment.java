@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -62,6 +63,9 @@ public class Flag2MapQuizFragment extends Fragment {
 
     @Bind(R.id.map)
     MapView mapView;
+
+    @Bind(R.id.progressBar2)
+    ProgressBar progressBar;
 
     private GoogleMap map;
     private CameraPosition startingPosition;
@@ -220,6 +224,12 @@ public class Flag2MapQuizFragment extends Fragment {
         private long startTime;
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
         protected String doInBackground(LatLng... params) {
             Log.d(TAG, "GeocodingTask started...");
             startTime = System.currentTimeMillis();
@@ -240,6 +250,7 @@ public class Flag2MapQuizFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             Log.d(TAG, String.format("GeocodingTask finished in %dms", System.currentTimeMillis() - startTime));
+            progressBar.setVisibility(View.GONE);
             if (s != null) {
                 processAnswer(s);
             }
