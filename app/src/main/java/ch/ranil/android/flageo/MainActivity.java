@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         recordFlag2Map.setText(getString(R.string.record, FlageoStorage.getRecord(Mode.FLAG2MAP, this)));
-        recordFlag2Name.setText(getString(R.string.record, FlageoStorage.getRecord(Mode.NAME2FLAG, this)));
+        recordFlag2Name.setText(getString(R.string.record, FlageoStorage.getRecord(Mode.FLAG2NAME, this)));
         recordName2Flag.setText(getString(R.string.record, FlageoStorage.getRecord(Mode.NAME2FLAG, this)));
     }
 
