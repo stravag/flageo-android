@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -62,6 +63,9 @@ public class Flag2MapQuizFragment extends Fragment {
 
     @Bind(R.id.map)
     MapView mapView;
+
+    @Bind(R.id.progressBar2)
+    ProgressBar progressBar;
 
     private GoogleMap map;
     private CameraPosition startingPosition;
@@ -134,6 +138,11 @@ public class Flag2MapQuizFragment extends Fragment {
 
         try {
             flag = FlagQuizBuilder.getInstance().nextUnasked();
+            // sadly google doesn't provide data for kosovo coordinates
+            // therefore we have to exclude it from the map quiz
+            if (flag == Flag.KOSOVO) {
+                flag = FlagQuizBuilder.getInstance().nextUnasked();
+            }
             quizListener.timeBoost(flag.getTimeBoost());
         } catch (FlagQuizBuilder.NothingToQuizException e) {
             quizListener.answeredAllQuestions();
@@ -220,6 +229,12 @@ public class Flag2MapQuizFragment extends Fragment {
         private long startTime;
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
         protected String doInBackground(LatLng... params) {
             Log.d(TAG, "GeocodingTask started...");
             startTime = System.currentTimeMillis();
@@ -228,7 +243,6 @@ public class Flag2MapQuizFragment extends Fragment {
                 List<Address> location = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
                 return location.get(0).getCountryName();
             } catch (IOException e) {
-                Toast.makeText(getActivity(), "Geocoding error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 return null;
             } catch (IndexOutOfBoundsException e) {
                 // Selected location on map without an address
@@ -240,8 +254,11 @@ public class Flag2MapQuizFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             Log.d(TAG, String.format("GeocodingTask finished in %dms", System.currentTimeMillis() - startTime));
+            progressBar.setVisibility(View.GONE);
             if (s != null) {
                 processAnswer(s);
+            } else {
+                Toast.makeText(getActivity(), "An error occurred while checking the position, sorry about that.", Toast.LENGTH_SHORT).show();
             }
         }
     }
