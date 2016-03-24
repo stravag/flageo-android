@@ -55,8 +55,8 @@
     <style name="FlagImageView" parent="AppTheme">
         <item name="android:layout_margin">16dp</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:maxWidth">150dp</item>
-        <item name="android:maxHeight">150dp</item>
+        <item name="android:maxWidth">130dp</item>
+        <item name="android:maxHeight">130dp</item>
         <item name="android:adjustViewBounds">true</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:scaleType">centerInside</item>
