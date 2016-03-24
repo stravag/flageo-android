@@ -138,6 +138,11 @@ public class Flag2MapQuizFragment extends Fragment {
 
         try {
             flag = FlagQuizBuilder.getInstance().nextUnasked();
+            // sadly google doesn't provide data for kosovo coordinates
+            // therefore we have to exclude it from the map quiz
+            if (flag == Flag.KOSOVO) {
+                flag = FlagQuizBuilder.getInstance().nextUnasked();
+            }
             quizListener.timeBoost(flag.getTimeBoost());
         } catch (FlagQuizBuilder.NothingToQuizException e) {
             quizListener.answeredAllQuestions();
@@ -238,7 +243,6 @@ public class Flag2MapQuizFragment extends Fragment {
                 List<Address> location = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
                 return location.get(0).getCountryName();
             } catch (IOException e) {
-                Toast.makeText(getActivity(), "Geocoding error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 return null;
             } catch (IndexOutOfBoundsException e) {
                 // Selected location on map without an address
@@ -253,6 +257,8 @@ public class Flag2MapQuizFragment extends Fragment {
             progressBar.setVisibility(View.GONE);
             if (s != null) {
                 processAnswer(s);
+            } else {
+                Toast.makeText(getActivity(), "An error occurred while checking the position, sorry about that.", Toast.LENGTH_SHORT).show();
             }
         }
     }

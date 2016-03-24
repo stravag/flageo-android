@@ -124,7 +124,7 @@ public enum Flag implements Quizable {
     MONTENEGRO(R.drawable.me, R.string.montenegro, 13812),
     MOROCCO(R.drawable.ma, R.string.morocco, 446550),
     MOZAMBIQUE(R.drawable.mz, R.string.mozambique, 801590),
-    MYANMAR(R.drawable.mm, R.string.myanmar, 676578),
+    MYANMAR(R.drawable.mm, R.string.myanmar, 676578, "Myanmar (Burma)"),
     NAMIBIA(R.drawable.na, R.string.namibia, 824292),
     NAURU(R.drawable.nr, R.string.nauru, 21),
     NEPAL(R.drawable.np, R.string.nepal, 147181),
