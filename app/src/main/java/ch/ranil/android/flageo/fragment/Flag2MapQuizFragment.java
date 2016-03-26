@@ -169,13 +169,13 @@ public class Flag2MapQuizFragment extends Fragment {
         Log.d(TAG, "Selected country: " + countryName);
         boolean correct = flag.getMapName(getActivity()).equals(countryName);
         if (!correct) {
-            UiUtils.flashView(flashView, R.drawable.flash_red);
+            UiUtils.flashView(flashView, R.color.red_flash);
             quizListener.timeBoost(++wrongCounter * WRONG_PENALTY);
             if (wrongCounter >= MAX_WRONG_COUNTER) {
                 quizListener.quizAnswered(false);
             }
         } else {
-            UiUtils.flashView(flashView, R.drawable.flash_green);
+            UiUtils.flashView(flashView, R.color.green_flash);
             quizListener.quizAnswered(true);
         }
     }
