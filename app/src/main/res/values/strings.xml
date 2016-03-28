@@ -7,8 +7,11 @@
     <string name="mode_flag2map">Country on Map</string>
     <string name="mode_flag2map_description">You have 60s, find countries on the map, you\'ll get extra time for small countries, but only two chances.</string>
     <string name="record">Record: %d</string>
+    <string name="selected_country">You selected: %s</string>
 
     <!-- Flags -->
+    <string name="unknown">Unknown</string>
+
     <string name="afghanistan">Afghanistan</string>
     <string name="albania">Albania</string>
     <string name="algeria">Algeria</string>

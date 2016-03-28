@@ -19,7 +19,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
@@ -68,7 +67,7 @@ public class Flag2MapQuizFragment extends Fragment {
     ProgressBar progressBar;
 
     private GoogleMap map;
-    private CameraPosition startingPosition;
+    private LatLng startingPosition = new LatLng(30, 0);
     private Geocoder geocoder;
     private Flag flag;
     private QuizListener quizListener;
@@ -103,7 +102,7 @@ public class Flag2MapQuizFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 map = googleMap;
-                startingPosition = map.getCameraPosition();
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(startingPosition, 1.0f));
                 map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
@@ -149,7 +148,7 @@ public class Flag2MapQuizFragment extends Fragment {
         }
 
         if (map != null) {
-            map.animateCamera(CameraUpdateFactory.newCameraPosition(startingPosition), 500, null);
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(startingPosition, 1.0f), 500, null);
         }
 
         flagView.setVisibility(View.VISIBLE);
@@ -173,6 +172,7 @@ public class Flag2MapQuizFragment extends Fragment {
             if (wrongCounter >= MAX_WRONG_COUNTER) {
                 quizListener.quizAnswered(false);
             }
+            Toast.makeText(getContext(), getString(R.string.selected_country, countryName), Toast.LENGTH_SHORT).show();
         } else {
             UiUtils.flashView(flashView, R.color.green_flash);
             quizListener.quizAnswered(true);
@@ -245,8 +245,7 @@ public class Flag2MapQuizFragment extends Fragment {
                 return null;
             } catch (IndexOutOfBoundsException e) {
                 // Selected location on map without an address
-                // if this is ever a real country we're officially f*cked
-                return "Donaldtrumpia";
+                return getString(R.string.unknown);
             }
         }
 
