@@ -2,11 +2,16 @@ language: android
 
 jdk: oraclejdk7
 
-#cache:
-#  directories:
-#   - node_modules
-#
-#sudo: false
+# Turn off caching to avoid any caching problems
+cache: false
+
+# Use the Travis Container-Based Infrastructure
+sudo: false
+
+env:
+  global:
+   # install timeout in minutes (2 minutes by default)
+    - ADB_INSTALL_TIMEOUT=8
 
 notifications:
   email:
@@ -35,11 +40,6 @@ android:
     # if you need to run emulator(s) during your tests
     - sys-img-armeabi-v7a-android-21
 
-env:
-  global:
-   # install timeout in minutes (2 minutes by default)
-    - ADB_INSTALL_TIMEOUT=8
-
 # Emulator Management: Create, Start and Wait
 before_script:
   - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
@@ -49,4 +49,4 @@ before_script:
 
 script:
   - android list target
-  - ./gradlew connectedAndroidTest
+  - ./gradlew connectedCheck
