@@ -7,8 +7,11 @@ import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +26,7 @@ import ch.ranil.android.flageo.fragment.QuizResultFragment;
 import ch.ranil.android.flageo.model.FlagQuizBuilder;
 import ch.ranil.android.flageo.model.Mode;
 import ch.ranil.android.flageo.storage.FlageoStorage;
+import ch.ranil.android.flageo.utils.UiUtils;
 
 public class QuizActivity extends AppCompatActivity implements QuizListener {
 
@@ -38,6 +42,12 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
 
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+
+    @Bind(R.id.toolbar_score)
+    TextView toolbarScore;
+
     private int score = 0;
     private Mode mode;
     private CountDownTimer timer;
@@ -49,6 +59,7 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_quiz);
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -58,9 +69,9 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         }
 
-        setContentView(R.layout.activity_quiz);
-
         ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
 
         mode = (Mode) getIntent().getSerializableExtra(PARAM_MODE);
 
@@ -69,6 +80,8 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
         // it a lot easier to manage the progressbar progress.
         progressBar.setMax((int) TIMER);
         progressBar.setProgress(0);
+
+        toolbarScore.setText(String.valueOf(score));
 
         FlagQuizBuilder.newInstance();
         loadQuiz();
@@ -149,6 +162,8 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
      */
     private void showResult() {
 
+        toolbarScore.setVisibility(View.GONE);
+
         // save record
         int record = FlageoStorage.setRecord(score, mode, this);
         QuizResultFragment resultFragment = QuizResultFragment.newInstance(score, record, mode);
@@ -168,6 +183,8 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
     public void quizAnswered(boolean correct) {
         if (correct) {
             score++;
+            toolbarScore.setText(String.valueOf(score));
+            UiUtils.flashView(toolbar, R.color.green_flash);
         }
         loadQuiz();
     }

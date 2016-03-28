@@ -10,8 +10,6 @@ import android.widget.ImageView;
 
 import java.lang.ref.WeakReference;
 
-import ch.ranil.android.flageo.R;
-
 /**
  * Bitmap cache implementation as suggested on:
  * http://developer.android.com/training/displaying-bitmaps
@@ -88,7 +86,7 @@ public class BitmapCache {
         // Decode image in background.
         @Override
         protected Bitmap doInBackground(Integer... params) {
-            final Bitmap bitmap = decodeSampledBitmapFromResource(context.getResources(), params[0], 100, 100);
+            final Bitmap bitmap = decodeBitmapFromResource(context.getResources(), params[0]);
             addBitmapToMemoryCache(String.valueOf(params[0]), bitmap);
             return bitmap;
         }
@@ -103,6 +101,14 @@ public class BitmapCache {
                 }
             }
         }
+    }
+
+    public static Bitmap decodeBitmapFromResource(Resources res, int resId) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeResource(res, resId, options);
     }
 
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight) {

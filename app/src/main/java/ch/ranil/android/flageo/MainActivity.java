@@ -3,6 +3,7 @@ package ch.ranil.android.flageo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -12,6 +13,9 @@ import ch.ranil.android.flageo.model.Mode;
 import ch.ranil.android.flageo.storage.FlageoStorage;
 
 public class MainActivity extends AppCompatActivity {
+
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
 
     @Bind(R.id.txt_flag2Map_record)
     TextView recordFlag2Map;
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        setSupportActionBar(toolbar);
     }
 
     @Override
