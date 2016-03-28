@@ -138,9 +138,8 @@ public class Flag2MapQuizFragment extends Fragment {
 
         try {
             flag = FlagQuizBuilder.getInstance().nextUnasked();
-            // sadly google doesn't provide data for kosovo coordinates
-            // therefore we have to exclude it from the map quiz
-            if (flag == Flag.KOSOVO) {
+            // some countries cannot be resolved properly on google maps
+            if ("".equals(flag.getMapName(getContext()))) {
                 flag = FlagQuizBuilder.getInstance().nextUnasked();
             }
             quizListener.timeBoost(flag.getTimeBoost());
