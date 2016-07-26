@@ -13,6 +13,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.ranil.android.flageo.R;
 import ch.ranil.android.flageo.cache.BitmapCache;
+import ch.ranil.android.flageo.model.Difficulty;
 import ch.ranil.android.flageo.model.Flag;
 import ch.ranil.android.flageo.model.Quiz;
 import ch.ranil.android.flageo.model.FlagQuizBuilder;
@@ -27,6 +28,7 @@ import ch.ranil.android.flageo.utils.UiUtils;
 public class Flag2NameQuizFragment extends Fragment {
 
     private static final String PARAM_NUMBER_OF_CHOICES = "numberOfChoices";
+    private static final String PARAM_DIFFICULTY = "difficulty";
 
     private static final int WRONG_PENALTY = -1000;
 
@@ -34,6 +36,7 @@ public class Flag2NameQuizFragment extends Fragment {
     ImageView flagAsked;
 
     private int numberOfChoices = 4;
+    private Difficulty difficulty = Difficulty.EASY;
     private Quiz<Flag> quiz;
     private QuizListener quizListener;
     private Button[] flagButtons;
@@ -46,10 +49,11 @@ public class Flag2NameQuizFragment extends Fragment {
      * @param numberOfChoices number of flag choices
      * @return fragment instance
      */
-    public static Flag2NameQuizFragment newInstance(int numberOfChoices) {
+    public static Flag2NameQuizFragment newInstance(int numberOfChoices, Difficulty difficulty) {
         Flag2NameQuizFragment fragment = new Flag2NameQuizFragment();
         Bundle args = new Bundle();
         args.putInt(PARAM_NUMBER_OF_CHOICES, numberOfChoices);
+        args.putSerializable(PARAM_DIFFICULTY, difficulty);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,10 +64,11 @@ public class Flag2NameQuizFragment extends Fragment {
 
         if (getArguments() != null) {
             numberOfChoices = getArguments().getInt(PARAM_NUMBER_OF_CHOICES);
+            difficulty = (Difficulty) getArguments().getSerializable(PARAM_DIFFICULTY);
         }
 
         try {
-            quiz = FlagQuizBuilder.getInstance().buildQuiz(numberOfChoices);
+            quiz = FlagQuizBuilder.getInstance().buildQuiz(numberOfChoices, difficulty);
         } catch (FlagQuizBuilder.NothingToQuizException e) {
             quizListener.answeredAllQuestions();
         }

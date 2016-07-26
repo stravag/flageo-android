@@ -2,13 +2,14 @@ package ch.ranil.android.flageo.model;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class QuizBuilderTest {
+public class FlagQuizBuilderTest {
 
     @Before
     public void setup() {
@@ -16,8 +17,8 @@ public class QuizBuilderTest {
     }
 
     @Test
-    public void testFlagQuizBuilding() throws FlagQuizBuilder.NothingToQuizException {
-        Quiz<Flag> quiz = FlagQuizBuilder.getInstance().buildQuiz(4);
+    public void flagQuizBuilding() throws FlagQuizBuilder.NothingToQuizException {
+        Quiz<Flag> quiz = FlagQuizBuilder.getInstance().buildQuiz(4, Difficulty.EASY);
 
         Set<Flag> flagSet = new HashSet<>();
         flagSet.addAll(Arrays.asList(quiz.getOptions()));
@@ -26,16 +27,26 @@ public class QuizBuilderTest {
     }
 
     @Test(expected = FlagQuizBuilder.NothingToQuizException.class)
-    public void testAllAnswered1() throws FlagQuizBuilder.NothingToQuizException {
+    public void allAnswered1() throws FlagQuizBuilder.NothingToQuizException {
         for (int i = 0; i <= Flag.values().length; i++) {
-            FlagQuizBuilder.getInstance().buildQuiz(4);
+            FlagQuizBuilder.getInstance().buildQuiz(4, Difficulty.EASY);
         }
     }
 
     @Test(expected = FlagQuizBuilder.NothingToQuizException.class)
-    public void testAllAnswered2() throws FlagQuizBuilder.NothingToQuizException {
+    public void allAnswered2() throws FlagQuizBuilder.NothingToQuizException {
         for (int i = 0; i <= Flag.values().length; i++) {
             FlagQuizBuilder.getInstance().nextUnasked();
+        }
+    }
+
+    @Test
+    @Ignore
+    public void ensureEachFlagHasOneSimilar() {
+
+        for (Flag flag : Flag.values()) {
+            Set<Flag> similarFlags = FlagQuizBuilder.getSimilarFlags(flag);
+            Assert.assertFalse("No similar flag found for: " + flag, similarFlags.isEmpty());
         }
     }
 }

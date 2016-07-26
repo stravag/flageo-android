@@ -136,11 +136,11 @@ public class Flag2MapQuizFragment extends Fragment {
         wrongCounter = 0;
 
         try {
-            flag = FlagQuizBuilder.getInstance().nextUnasked();
             // some countries cannot be resolved properly on google maps
-            if ("".equals(flag.getMapName(getContext()))) {
+            do {
                 flag = FlagQuizBuilder.getInstance().nextUnasked();
-            }
+            } while (!flag.getMapName(getContext()).isPresent());
+
             quizListener.timeBoost(flag.getTimeBoost());
         } catch (FlagQuizBuilder.NothingToQuizException e) {
             quizListener.answeredAllQuestions();
@@ -165,7 +165,7 @@ public class Flag2MapQuizFragment extends Fragment {
      */
     private void processAnswer(String countryName) {
         Log.d(TAG, "Selected country: " + countryName);
-        boolean correct = flag.getMapName(getActivity()).equals(countryName);
+        boolean correct = flag.getMapName(getActivity()).get().equals(countryName);
         if (!correct) {
             UiUtils.flashView(flashView, R.color.red_flash);
             quizListener.timeBoost(++wrongCounter * WRONG_PENALTY);

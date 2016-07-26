@@ -23,6 +23,7 @@ import ch.ranil.android.flageo.fragment.Flag2NameQuizFragment;
 import ch.ranil.android.flageo.fragment.Name2FlagQuizFragment;
 import ch.ranil.android.flageo.fragment.QuizListener;
 import ch.ranil.android.flageo.fragment.QuizResultFragment;
+import ch.ranil.android.flageo.model.Difficulty;
 import ch.ranil.android.flageo.model.FlagQuizBuilder;
 import ch.ranil.android.flageo.model.Mode;
 import ch.ranil.android.flageo.storage.FlageoStorage;
@@ -141,14 +142,14 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
         if (fragment == null) {
             switch (mode) {
                 case FLAG2NAME:
-                    fragment = Flag2NameQuizFragment.newInstance(NUMBER_OF_CHOICES);
+                    fragment = Flag2NameQuizFragment.newInstance(NUMBER_OF_CHOICES, Difficulty.VERY_HARD);
                     break;
                 case FLAG2MAP:
                     fragment = Flag2MapQuizFragment.newInstance();
                     fragments.put(mode, fragment);
                     break;
                 case NAME2FLAG:
-                    fragment = Name2FlagQuizFragment.newInstance(NUMBER_OF_CHOICES);
+                    fragment = Name2FlagQuizFragment.newInstance(NUMBER_OF_CHOICES, Difficulty.VERY_HARD);
             }
         } else if (fragment instanceof Flag2MapQuizFragment) {
             ((Flag2MapQuizFragment) fragment).loadQuiz();
