@@ -30,8 +30,6 @@ public class Flag2NameQuizFragment extends Fragment {
     private static final String PARAM_NUMBER_OF_CHOICES = "numberOfChoices";
     private static final String PARAM_DIFFICULTY = "difficulty";
 
-    private static final int WRONG_PENALTY = -1000;
-
     @Bind(R.id.txt_flagAsked)
     ImageView flagAsked;
 
@@ -137,7 +135,7 @@ public class Flag2NameQuizFragment extends Fragment {
         boolean correct = quiz.isCorrect(answer);
         if (!correct) {
             UiUtils.shakeView(flagButtons[answer]);
-            quizListener.timeBoost(++wrongCounter * WRONG_PENALTY);
+            quizListener.timeBoost(++wrongCounter * difficulty.getPenalty());
         } else {
             quizListener.quizAnswered(true);
         }
