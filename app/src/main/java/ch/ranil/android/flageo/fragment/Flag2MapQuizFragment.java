@@ -150,7 +150,7 @@ public class Flag2MapQuizFragment extends Fragment {
                 flag = FlagQuizBuilder.getInstance().nextUnasked();
             } while (!flag.getMapName(getContext()).isPresent());
 
-            quizListener.timeBoost(flag.getTimeBoost());
+            //quizListener.timeBoost(flag.getTimeBoost()); // small country timeboost disabled
         } catch (FlagQuizBuilder.NothingToQuizException e) {
             quizListener.answeredAllQuestions();
             return;
@@ -176,9 +176,10 @@ public class Flag2MapQuizFragment extends Fragment {
         Log.d(TAG, "Selected country: " + countryName);
         boolean correct = flag.getMapName(getActivity()).get().equals(countryName);
         if (!correct) {
+            wrongCounter++;
             UiUtils.flashView(flashView, R.color.red_flash);
             Toast.makeText(getContext(), getString(R.string.selected_country, countryName), Toast.LENGTH_SHORT).show();
-            quizListener.timeBoost(++wrongCounter * difficulty.getPenalty());
+            quizListener.timeBoost(difficulty.getPenalty());
             if (wrongCounter >= difficulty.getMaxwrong()) {
                 quizListener.quizAnswered(false);
             }
@@ -190,6 +191,7 @@ public class Flag2MapQuizFragment extends Fragment {
 
     @OnClick(R.id.imgbtn_flagAsked)
     public void flipFlagImage() {
+        quizListener.timeBoost(difficulty.getPenalty());
         flagContainer.startAnimation(new FlipAnimation(flagView, flagTextView));
     }
 

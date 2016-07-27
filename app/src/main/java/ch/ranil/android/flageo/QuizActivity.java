@@ -148,7 +148,7 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
                     fragment = Flag2NameQuizFragment.newInstance(NUMBER_OF_CHOICES, difficulty);
                     break;
                 case FLAG2MAP:
-                    fragment = Flag2MapQuizFragment.newInstance();
+                    fragment = Flag2MapQuizFragment.newInstance(difficulty);
                     fragments.put(mode, fragment);
                     break;
                 case NAME2FLAG:
@@ -169,7 +169,7 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
         toolbarScore.setVisibility(View.GONE);
 
         // save record
-        int record = FlageoStorage.setRecord(score, mode, this);
+        int record = FlageoStorage.setRecord(score, mode, difficulty, this);
         QuizResultFragment resultFragment = QuizResultFragment.newInstance(score, record, mode);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

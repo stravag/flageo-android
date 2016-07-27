@@ -63,9 +63,14 @@ public class MainFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        recordFlag2Map.setText(getString(R.string.record, FlageoStorage.getRecord(Mode.FLAG2MAP, getActivity())));
-        recordFlag2Name.setText(getString(R.string.record, FlageoStorage.getRecord(Mode.FLAG2NAME, getActivity())));
-        recordName2Flag.setText(getString(R.string.record, FlageoStorage.getRecord(Mode.NAME2FLAG, getActivity())));
+        recordFlag2Map.setText(getString(R.string.record,
+                FlageoStorage.getRecord(Mode.FLAG2MAP, difficulty, getActivity())));
+
+        recordFlag2Name.setText(getString(R.string.record,
+                FlageoStorage.getRecord(Mode.FLAG2NAME, difficulty, getActivity())));
+
+        recordName2Flag.setText(getString(R.string.record,
+                FlageoStorage.getRecord(Mode.NAME2FLAG, difficulty, getActivity())));
     }
 
     @OnClick(R.id.btn_quizFlag2Name)

@@ -30,4 +30,13 @@ public class FlageoStorage {
         }
         return currentRecord;
     }
+
+    public static boolean isDifficultyActive(Difficulty difficulty, Context context) {
+        for (Mode mode : Mode.values()) {
+            if (getRecord(mode, difficulty, context) == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

@@ -5,7 +5,7 @@
     <string name="mode_name2flag">Flag by Country</string>
     <string name="mode_name2flag_description">You have 60s, try and find as many flags as possible. Wrong answer lead to a time penalty.</string>
     <string name="mode_flag2map">Country on Map</string>
-    <string name="mode_flag2map_description">You have 60s, find countries on the map, you\'ll get extra time for small countries, but only two chances.</string>
+    <string name="mode_flag2map_description">You have 60s, find countries on map. Tap flag for hint. Hints and wrong answers result in penalty.</string>
     <string name="record">Record: %d</string>
     <string name="selected_country">You selected: %s</string>
 
@@ -226,8 +226,8 @@
     <string name="flag4">Flag 4</string>
 
     <!-- Difficulties -->
-    <string name="easy">Easy</string>
-    <string name="medium">Medium</string>
-    <string name="hard">Hard</string>
+    <string name="easy">Normal</string>
+    <string name="medium">Challenge</string>
+    <string name="hard">Nerd</string>
     <string name="very_hard">Sheldon Cooper</string>
 </resources>

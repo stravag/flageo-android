@@ -13,6 +13,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.ranil.android.flageo.fragment.MainFragment;
 import ch.ranil.android.flageo.model.Difficulty;
+import ch.ranil.android.flageo.storage.FlageoStorage;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +35,12 @@ public class MainActivity extends AppCompatActivity {
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(), this);
         viewPager.setAdapter(pagerAdapter);
     }
+
+    @Override
+    protected void onResume() {
+        viewPager.getAdapter().notifyDataSetChanged();
+        super.onResume();
+    }
 }
 
 class PagerAdapter extends FragmentPagerAdapter {
@@ -52,7 +59,13 @@ class PagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return Difficulty.values().length;
+        int active = 1;
+        for (Difficulty difficulty : Difficulty.values()) {
+            if (FlageoStorage.isDifficultyActive(difficulty, context)) {
+                active++;
+            }
+        }
+        return active;
     }
 
     @Override
