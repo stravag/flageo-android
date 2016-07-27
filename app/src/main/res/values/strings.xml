@@ -5,7 +5,7 @@
     <string name="mode_name2flag">Flag by Country</string>
     <string name="mode_name2flag_description">You have 60s, try and find as many flags as possible. Wrong answer lead to a time penalty.</string>
     <string name="mode_flag2map">Country on Map</string>
-    <string name="mode_flag2map_description">You have 60s, find countries on the map, you\'ll get extra time for small countries, but only two chances.</string>
+    <string name="mode_flag2map_description">You have 60s, find countries on map. Tap flag for hint. Hints and wrong answers result in penalty.</string>
     <string name="record">Record: %d</string>
     <string name="selected_country">You selected: %s</string>
 
@@ -217,19 +217,6 @@
     <string name="you_scored">You scored</string>
     <string name="you_scored_record">Wohoooo, a new record!</string>
     <string name="score">%d points</string>
-    <!--
-    <string name="comment_0">Oh come on! I\'m sure you can do better than that. Did you fall asleep? Application crashed? Drunk?</string>
-    <string name="comment_1">Hmmm, I think there\'s room for improvement.</string>
-    <string name="comment_2">OK we\'re getting there.</string>
-    <string name="comment_3">Not bad, not bad at all!</string>
-    <string name="comment_4">It\'s safe to say you reached "Sheldon Cooper" level</string>
-
-    <string name="fun_fact_1">Fun fact: Sunsets on mars are blue</string>
-    <string name="fun_fact_2">Fun fact: Many Korean folktales begin with ˮBack when tigers used to smokeˮ</string>
-    <string name="fun_fact_3">Fun fact: Most toilets flush in E flat</string>
-    <string name="fun_fact_4">Fun fact: The serial number of the first MAC ever produced was 2001</string>
-    <string name="fun_fact_5">Fun fact: There is a town in Newfoundland, Canada called Dildo</string>
-    -->
 
     <!-- Content Descriptions -->
     <string name="flagAsked">Asked flag</string>
@@ -237,4 +224,10 @@
     <string name="flag2">Flag 2</string>
     <string name="flag3">Flag 3</string>
     <string name="flag4">Flag 4</string>
+
+    <!-- Difficulties -->
+    <string name="easy">Normal</string>
+    <string name="medium">Challenge</string>
+    <string name="hard">Nerd</string>
+    <string name="very_hard">Sheldon Cooper</string>
 </resources>

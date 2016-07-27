@@ -2,6 +2,8 @@ package ch.ranil.android.flageo.model;
 
 import android.content.Context;
 
+import com.google.common.base.Optional;
+
 import ch.ranil.android.flageo.R;
 
 public enum Flag implements Quizable {
@@ -213,7 +215,7 @@ public enum Flag implements Quizable {
     private int drawable;
     private int translation;
     private long area = REFERENCE_AREA;
-    private String mapName;
+    private Optional<String> mapName;
 
     Flag(int drawable, int translation, long area) {
         this.drawable = drawable;
@@ -225,7 +227,7 @@ public enum Flag implements Quizable {
         this.drawable = drawable;
         this.translation = translation;
         this.area = area;
-        this.mapName = mapName;
+        this.mapName = Optional.fromNullable(mapName);
     }
 
     /**
@@ -249,9 +251,9 @@ public enum Flag implements Quizable {
     /**
      * The country name returned by geocoding.
      */
-    public String getMapName(Context context) {
+    public Optional<String> getMapName(Context context) {
         if (mapName == null) {
-            return context.getString(translation);
+            return Optional.of(context.getString(translation));
         }
         return mapName;
     }
