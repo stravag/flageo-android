@@ -34,6 +34,7 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
     private static final String TAG = "QuizActivity";
 
     public static final String PARAM_MODE = "mode";
+    public static final String PARAM_DIFFICULTY = "difficulty";
 
     private static final long TIMER = 60000;
     private static final long TIMER_INTERVAL = 100; // ms
@@ -51,6 +52,7 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
 
     private int score = 0;
     private Mode mode;
+    private Difficulty difficulty;
     private CountDownTimer timer;
     private long remainingMillis = TIMER;
 
@@ -75,6 +77,7 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
         setSupportActionBar(toolbar);
 
         mode = (Mode) getIntent().getSerializableExtra(PARAM_MODE);
+        difficulty = (Difficulty) getIntent().getSerializableExtra(PARAM_DIFFICULTY);
 
         // I know, it's potentially dangerous to use the timer scale for the progressbar (long > int)
         // but I guess it's highly unlikely someone boosts the timer above Integer.MAX_VALUE and it makes
@@ -142,14 +145,14 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
         if (fragment == null) {
             switch (mode) {
                 case FLAG2NAME:
-                    fragment = Flag2NameQuizFragment.newInstance(NUMBER_OF_CHOICES, Difficulty.VERY_HARD);
+                    fragment = Flag2NameQuizFragment.newInstance(NUMBER_OF_CHOICES, difficulty);
                     break;
                 case FLAG2MAP:
                     fragment = Flag2MapQuizFragment.newInstance();
                     fragments.put(mode, fragment);
                     break;
                 case NAME2FLAG:
-                    fragment = Name2FlagQuizFragment.newInstance(NUMBER_OF_CHOICES, Difficulty.VERY_HARD);
+                    fragment = Name2FlagQuizFragment.newInstance(NUMBER_OF_CHOICES, difficulty);
             }
         } else if (fragment instanceof Flag2MapQuizFragment) {
             ((Flag2MapQuizFragment) fragment).loadQuiz();

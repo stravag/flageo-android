@@ -125,6 +125,7 @@ public class FlagQuizBuilder {
      * @return flag
      * @throws NothingToQuizException
      */
+    // TODO add difficulty
     public Flag nextUnasked() throws NothingToQuizException {
         if (unasked.isEmpty()) {
             throw new NothingToQuizException();
