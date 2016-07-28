@@ -59,13 +59,13 @@ class PagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        int active = 1;
+        int active = 0;
         for (Difficulty difficulty : Difficulty.values()) {
             if (FlageoStorage.isDifficultyActive(difficulty, context)) {
                 active++;
             }
         }
-        return active;
+        return active == 0 ? 1 : active;
     }
 
     @Override
