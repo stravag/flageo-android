@@ -2,11 +2,16 @@ language: android
 
 jdk: oraclejdk7
 
-#cache:
-#  directories:
-#   - node_modules
-#
-#sudo: false
+# Turn off caching to avoid any caching problems
+cache: false
+
+# Use the Travis Container-Based Infrastructure
+sudo: false
+
+env:
+  global:
+   # install timeout in minutes (2 minutes by default)
+    - ADB_INSTALL_TIMEOUT=8
 
 notifications:
   email:
@@ -16,8 +21,10 @@ android:
   components:
     # Uncomment the lines below if you want to
     # use the latest revision of Android SDK Tools
-    - platform-tools
-    - tools
+    #- platform-tools
+    #- tools
+    - tools # to get the new `repository-11.xml`
+    - tools # to install Android SDK tools 25.1.x (x = 6 right now)
 
     # The BuildTools version used by your project
     - build-tools-23.0.2
@@ -33,20 +40,15 @@ android:
 
     # Specify at least one system image,
     # if you need to run emulator(s) during your tests
-    - sys-img-armeabi-v7a-android-21
-
-env:
-  global:
-   # install timeout in minutes (2 minutes by default)
-    - ADB_INSTALL_TIMEOUT=8
+#    - sys-img-armeabi-v7a-android-21
 
 # Emulator Management: Create, Start and Wait
-before_script:
-  - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
-  - emulator -avd test -no-skin -no-audio -no-window &
-  - android-wait-for-emulator
-  - adb shell input keyevent 82 &
+#before_script:
+#  - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
+#  - emulator -avd test -no-skin -no-audio -no-window &
+#  - android-wait-for-emulator
+#  - adb shell input keyevent 82 &
 
 script:
-  - android list target
-  - ./gradlew connectedAndroidTest
+#  - android list target
+  - ./gradlew check

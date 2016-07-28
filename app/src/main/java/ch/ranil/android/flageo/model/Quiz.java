@@ -2,19 +2,25 @@ package ch.ranil.android.flageo.model;
 
 import java.util.Arrays;
 
-public class Quiz<T> {
+public class Quiz<T extends Quizable> {
 
     private final T[] options;
     private final int answerIndex;
 
-
-    public Quiz(T[] options, int answer) {
-        if (answer < 0 || answer >= options.length) {
-            throw new IllegalArgumentException("Unexpected answer index");
-        }
+    public Quiz(T[] options, T answer) {
 
         this.options = options;
-        this.answerIndex = answer;
+
+        for (int i = 0; i < options.length; i++) {
+            if (options[i] == answer) {
+                this.answerIndex = i;
+                return;
+            }
+        }
+
+        throw new IllegalArgumentException(
+                String.format("Something odd just happened... couldn't find answer (%s) for the quiz (%s)",
+                answer.toString(), Arrays.toString(options)));
     }
 
     public T[] getOptions() {

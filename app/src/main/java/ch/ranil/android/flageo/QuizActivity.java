@@ -23,6 +23,7 @@ import ch.ranil.android.flageo.fragment.Flag2NameQuizFragment;
 import ch.ranil.android.flageo.fragment.Name2FlagQuizFragment;
 import ch.ranil.android.flageo.fragment.QuizListener;
 import ch.ranil.android.flageo.fragment.QuizResultFragment;
+import ch.ranil.android.flageo.model.Difficulty;
 import ch.ranil.android.flageo.model.FlagQuizBuilder;
 import ch.ranil.android.flageo.model.Mode;
 import ch.ranil.android.flageo.storage.FlageoStorage;
@@ -33,6 +34,7 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
     private static final String TAG = "QuizActivity";
 
     public static final String PARAM_MODE = "mode";
+    public static final String PARAM_DIFFICULTY = "difficulty";
 
     private static final long TIMER = 60000;
     private static final long TIMER_INTERVAL = 100; // ms
@@ -50,6 +52,7 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
 
     private int score = 0;
     private Mode mode;
+    private Difficulty difficulty;
     private CountDownTimer timer;
     private long remainingMillis = TIMER;
 
@@ -74,6 +77,7 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
         setSupportActionBar(toolbar);
 
         mode = (Mode) getIntent().getSerializableExtra(PARAM_MODE);
+        difficulty = (Difficulty) getIntent().getSerializableExtra(PARAM_DIFFICULTY);
 
         // I know, it's potentially dangerous to use the timer scale for the progressbar (long > int)
         // but I guess it's highly unlikely someone boosts the timer above Integer.MAX_VALUE and it makes
@@ -141,14 +145,14 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
         if (fragment == null) {
             switch (mode) {
                 case FLAG2NAME:
-                    fragment = Flag2NameQuizFragment.newInstance(NUMBER_OF_CHOICES);
+                    fragment = Flag2NameQuizFragment.newInstance(NUMBER_OF_CHOICES, difficulty);
                     break;
                 case FLAG2MAP:
-                    fragment = Flag2MapQuizFragment.newInstance();
+                    fragment = Flag2MapQuizFragment.newInstance(difficulty);
                     fragments.put(mode, fragment);
                     break;
                 case NAME2FLAG:
-                    fragment = Name2FlagQuizFragment.newInstance(NUMBER_OF_CHOICES);
+                    fragment = Name2FlagQuizFragment.newInstance(NUMBER_OF_CHOICES, difficulty);
             }
         } else if (fragment instanceof Flag2MapQuizFragment) {
             ((Flag2MapQuizFragment) fragment).loadQuiz();
@@ -165,7 +169,7 @@ public class QuizActivity extends AppCompatActivity implements QuizListener {
         toolbarScore.setVisibility(View.GONE);
 
         // save record
-        int record = FlageoStorage.setRecord(score, mode, this);
+        int record = FlageoStorage.setRecord(score, mode, difficulty, this);
         QuizResultFragment resultFragment = QuizResultFragment.newInstance(score, record, mode);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

@@ -1,15 +1,18 @@
 package ch.ranil.android.flageo;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import ch.ranil.android.flageo.model.Mode;
+import ch.ranil.android.flageo.fragment.MainFragment;
+import ch.ranil.android.flageo.model.Difficulty;
 import ch.ranil.android.flageo.storage.FlageoStorage;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,14 +20,8 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
-    @Bind(R.id.txt_flag2Map_record)
-    TextView recordFlag2Map;
-
-    @Bind(R.id.txt_flag2Name_record)
-    TextView recordFlag2Name;
-
-    @Bind(R.id.txt_name2Flag_record)
-    TextView recordName2Flag;
+    @Bind(R.id.pager)
+    ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,35 +31,47 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+
+        PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(), this);
+        viewPager.setAdapter(pagerAdapter);
     }
 
     @Override
     protected void onResume() {
+        viewPager.getAdapter().notifyDataSetChanged();
         super.onResume();
+    }
+}
 
-        recordFlag2Map.setText(getString(R.string.record, FlageoStorage.getRecord(Mode.FLAG2MAP, this)));
-        recordFlag2Name.setText(getString(R.string.record, FlageoStorage.getRecord(Mode.FLAG2NAME, this)));
-        recordName2Flag.setText(getString(R.string.record, FlageoStorage.getRecord(Mode.NAME2FLAG, this)));
+class PagerAdapter extends FragmentPagerAdapter {
+
+    private Context context;
+
+    public PagerAdapter(FragmentManager fm, Context context) {
+        super(fm);
+        this.context = context;
     }
 
-    @OnClick(R.id.btn_quizFlag2Name)
-    public void startFlag2NameQuiz() {
-        startQuiz(Mode.FLAG2NAME);
+    @Override
+    public Fragment getItem(int position) {
+        return MainFragment.newInstance(Difficulty.values()[position]);
     }
 
-    @OnClick(R.id.btn_quizFlag2Map)
-    public void startFlag2MapQuiz() {
-        startQuiz(Mode.FLAG2MAP);
+    @Override
+    public int getCount() {
+        int active = 0;
+        for (Difficulty difficulty : Difficulty.values()) {
+            if (FlageoStorage.isDifficultyActive(difficulty, context)) {
+                active++;
+            }
+        }
+        return active == 0 ? 1 : active;
     }
 
-    @OnClick(R.id.btn_quizName2Flag)
-    public void startName2FlagQuiz() {
-        startQuiz(Mode.NAME2FLAG);
+    @Override
+    public CharSequence getPageTitle(int position) {
+        Difficulty difficulty = Difficulty.values()[position];
+        return context.getString(difficulty.getTranslation());
     }
 
-    private void startQuiz(Mode mode) {
-        Intent intent = new Intent(this, QuizActivity.class);
-        intent.putExtra(QuizActivity.PARAM_MODE, mode);
-        startActivity(intent);
-    }
 }

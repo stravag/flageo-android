@@ -19,7 +19,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
@@ -31,6 +30,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.ranil.android.flageo.R;
 import ch.ranil.android.flageo.cache.BitmapCache;
+import ch.ranil.android.flageo.model.Difficulty;
 import ch.ranil.android.flageo.model.Flag;
 import ch.ranil.android.flageo.model.FlagQuizBuilder;
 import ch.ranil.android.flageo.utils.FlipAnimation;
@@ -46,8 +46,7 @@ public class Flag2MapQuizFragment extends Fragment {
 
     private static final String TAG = "Flag2MapQuizFragment";
 
-    private static final int MAX_WRONG_COUNTER = 2;
-    private static final int WRONG_PENALTY = -1000;
+    private static final String PARAM_DIFFICULTY = "difficulty";
 
     @Bind(R.id.flag_container)
     View flagContainer;
@@ -68,10 +67,11 @@ public class Flag2MapQuizFragment extends Fragment {
     ProgressBar progressBar;
 
     private GoogleMap map;
-    private CameraPosition startingPosition;
+    private LatLng startingPosition = new LatLng(30, 0);
     private Geocoder geocoder;
     private Flag flag;
     private QuizListener quizListener;
+    private Difficulty difficulty;
 
     private int wrongCounter;
 
@@ -80,13 +80,21 @@ public class Flag2MapQuizFragment extends Fragment {
      *
      * @return fragment instance
      */
-    public static Flag2MapQuizFragment newInstance() {
-        return new Flag2MapQuizFragment();
+    public static Flag2MapQuizFragment newInstance(Difficulty difficulty) {
+        Flag2MapQuizFragment fragment = new Flag2MapQuizFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(PARAM_DIFFICULTY, difficulty);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            difficulty = (Difficulty) getArguments().getSerializable(PARAM_DIFFICULTY);
+        }
 
         geocoder = new Geocoder(getActivity(), Locale.ENGLISH);
     }
@@ -103,7 +111,7 @@ public class Flag2MapQuizFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 map = googleMap;
-                startingPosition = map.getCameraPosition();
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(startingPosition, 1.0f));
                 map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
@@ -137,20 +145,19 @@ public class Flag2MapQuizFragment extends Fragment {
         wrongCounter = 0;
 
         try {
-            flag = FlagQuizBuilder.getInstance().nextUnasked();
-            // sadly google doesn't provide data for kosovo coordinates
-            // therefore we have to exclude it from the map quiz
-            if (flag == Flag.KOSOVO) {
+            // some countries cannot be resolved properly on google maps
+            do {
                 flag = FlagQuizBuilder.getInstance().nextUnasked();
-            }
-            quizListener.timeBoost(flag.getTimeBoost());
+            } while (!flag.getMapName(getContext()).isPresent());
+
+            //quizListener.timeBoost(flag.getTimeBoost()); // small country timeboost disabled
         } catch (FlagQuizBuilder.NothingToQuizException e) {
             quizListener.answeredAllQuestions();
             return;
         }
 
         if (map != null) {
-            map.animateCamera(CameraUpdateFactory.newCameraPosition(startingPosition), 500, null);
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(startingPosition, 1.0f), 500, null);
         }
 
         flagView.setVisibility(View.VISIBLE);
@@ -167,11 +174,13 @@ public class Flag2MapQuizFragment extends Fragment {
      */
     private void processAnswer(String countryName) {
         Log.d(TAG, "Selected country: " + countryName);
-        boolean correct = flag.getMapName(getActivity()).equals(countryName);
+        boolean correct = flag.getMapName(getActivity()).get().equals(countryName);
         if (!correct) {
+            wrongCounter++;
             UiUtils.flashView(flashView, R.color.red_flash);
-            quizListener.timeBoost(++wrongCounter * WRONG_PENALTY);
-            if (wrongCounter >= MAX_WRONG_COUNTER) {
+            Toast.makeText(getContext(), getString(R.string.selected_country, countryName), Toast.LENGTH_SHORT).show();
+            quizListener.timeBoost(difficulty.getPenalty());
+            if (wrongCounter >= difficulty.getMaxwrong()) {
                 quizListener.quizAnswered(false);
             }
         } else {
@@ -182,6 +191,7 @@ public class Flag2MapQuizFragment extends Fragment {
 
     @OnClick(R.id.imgbtn_flagAsked)
     public void flipFlagImage() {
+        quizListener.timeBoost(difficulty.getPenalty());
         flagContainer.startAnimation(new FlipAnimation(flagView, flagTextView));
     }
 
@@ -246,8 +256,7 @@ public class Flag2MapQuizFragment extends Fragment {
                 return null;
             } catch (IndexOutOfBoundsException e) {
                 // Selected location on map without an address
-                // if this is ever a real country we're officially f*cked
-                return "Donaldtrumpia";
+                return getString(R.string.unknown);
             }
         }
 
