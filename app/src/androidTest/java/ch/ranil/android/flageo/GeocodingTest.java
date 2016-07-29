@@ -6,7 +6,6 @@ import android.location.Geocoder;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityTestCase;
-import android.test.suitebuilder.annotation.SmallTest;
 
 import junit.framework.Assert;
 
@@ -21,7 +20,6 @@ import java.util.Locale;
 import ch.ranil.android.flageo.model.Flag;
 
 @RunWith(AndroidJUnit4.class)
-@SmallTest
 public class GeocodingTest extends ActivityTestCase {
 
     private Context context;
@@ -43,7 +41,7 @@ public class GeocodingTest extends ActivityTestCase {
                     address = geocoder.getFromLocationName(flag.getMapName(context).get() + " country", 1);
                     address = geocoder.getFromLocation(address.get(0).getLatitude(), address.get(0).getLongitude(), 1);
 
-                    Assert.assertEquals(address.get(0).toString(),
+                    Assert.assertEquals("flag: " + flag + " / " + address.get(0).toString(),
                                         flag.getMapName(context).get(),
                                         address.get(0).getCountryName());
                 } catch (IndexOutOfBoundsException e) {
