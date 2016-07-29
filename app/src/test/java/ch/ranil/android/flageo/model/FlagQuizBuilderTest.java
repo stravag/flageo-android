@@ -41,12 +41,12 @@ public class FlagQuizBuilderTest {
     }
 
     @Test
-    @Ignore
     public void ensureEachFlagHasOneSimilar() {
 
         for (Flag flag : Flag.values()) {
             Set<Flag> similarFlags = FlagQuizBuilder.getSimilarFlags(flag);
-            Assert.assertFalse("No similar flag found for: " + flag, similarFlags.isEmpty());
+            Assert.assertTrue("Not enough (" + similarFlags.size() + ") similar flag found for: " + flag,
+                              3 <= similarFlags.size());
         }
     }
 }

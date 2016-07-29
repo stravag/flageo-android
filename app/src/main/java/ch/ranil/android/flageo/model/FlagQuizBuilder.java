@@ -16,38 +16,38 @@ public class FlagQuizBuilder {
     protected static List<Set<Flag>> similarFlags;
     static {
         similarFlags = new ArrayList<>();
-        // red white black
+        // arab style
         similarFlags.add(new HashSet<>(Arrays.asList(EGYPT, SYRIA, IRAQ, YEMEN, SUDAN, JORDAN, KUWAIT,
                                                      UNITED_ARAB_EMIRATES, WESTERN_SAHARA)));
-        // red blue yellow
-        similarFlags.add(new HashSet<>(Arrays.asList(ROMANIA, CHAD, MOLDOVA, ANDORRA)));
-        // red yellow
+        // red-yellow
         similarFlags.add(new HashSet<>(Arrays.asList(PEOPLES_REPUBLIC_OF_CHINA, KYRGYZSTAN, MACEDONIA,
                                                      MONGOLIA)));
-        // red white
+        // red-white
         similarFlags.add(new HashSet<>(Arrays.asList(AUSTRIA, LATVIA, LEBANON, INDONESIA, MONACO, POLAND,
                                                      JAPAN, QATAR, BAHRAIN, SINGAPORE, MALTA, CANADA,
                                                      GEORGIA, PERU)));
-        // red white blue
-        similarFlags.add(new HashSet<>(Arrays.asList(RUSSIA, SERBIA, SLOVAKIA, SLOVENIA, NETHERLANDS,
-                                                     LUXEMBOURG, CROATIA, PARAGUAY, THAILAND, COSTA_RICA,
-                                                     NORTH_KOREA, CUBA, NORTH_KOREA, CAMBODIA, CHILE,
-                                                     UNITED_STATES, LIBERIA, DOMINICAN_REPUBLIC, FRANCE,
-                                                     KIRIBATI, LAOS, MALAYSIA, NEPAL, PANAMA)));
-        // cross
-        similarFlags.add(new HashSet<>(Arrays.asList(SWITZERLAND, TONGA)));
-        // red green black
+        // blue-red-white rows
+        similarFlags.add(new HashSet<>(Arrays.asList(RUSSIA, NETHERLANDS, LUXEMBOURG, THAILAND, COSTA_RICA)));
+        // blue-red-white rows with stuff
+        similarFlags.add(new HashSet<>(Arrays.asList(SERBIA, SLOVAKIA, SLOVENIA, PARAGUAY, CROATIA)));
+        // blue-red-white stripes
+        similarFlags.add(new HashSet<>(Arrays.asList(UNITED_STATES, LIBERIA, MALAYSIA, CUBA)));
+        similarFlags.add(new HashSet<>(Arrays.asList(NORTH_KOREA, CAMBODIA, CHILE, DOMINICAN_REPUBLIC, FRANCE,
+                                                     KIRIBATI, NEPAL, PANAMA)));
+        // cross red-white
+        similarFlags.add(new HashSet<>(Arrays.asList(SWITZERLAND, TONGA, DENMARK, GEORGIA)));
+        // black-green-red
         similarFlags.add(new HashSet<>(Arrays.asList(MALAWI, ZAMBIA, AFGHANISTAN, LIBYA)));
-        // circles
-        similarFlags.add(new HashSet<>(Arrays.asList(JAPAN, BANGLADESH, PALAU)));
-        // half-moon
+        // one color, round in middle, circles
+        similarFlags.add(new HashSet<>(Arrays.asList(JAPAN, BANGLADESH, PALAU, TUNISIA)));
+        // half moon
         similarFlags.add(new HashSet<>(Arrays.asList(ALGERIA, TUNISIA, MAURITANIA, PAKISTAN, COMOROS,
                                                      MALAYSIA, MALDIVES, SAUDI_ARABIA, TURKEY, TURKMENISTAN)));
-        // green yellow red
+        // green-red-yellow
         similarFlags.add(new HashSet<>(Arrays.asList(MALI, GUINEA, CAMEROON, SENEGAL, BENIN, GUINEABISSAU,
                                                      GHANA, REPUBLIC_OF_THE_CONGO, SAO_TOME_PRINCIPE,
                                                      TOGO)));
-        // blue white (black)
+        // blue-white-(black)
         similarFlags.add(new HashSet<>(Arrays.asList(ARGENTINA, ISRAEL, EL_SALVADOR, NICARAGUA, HONDURAS,
                                                      GUATEMALA, BOTSWANA, ESTONIA, GREECE, URUGUAY)));
         // diagonal
@@ -70,27 +70,37 @@ public class FlagQuizBuilder {
         // union jack
         similarFlags.add(new HashSet<>(Arrays.asList(NEW_ZEALAND, AUSTRALIA, UNITED_KINGDOM, FIJI,
                                                      TUVALU)));
-        // red white green
-        similarFlags.add(new HashSet<>(Arrays.asList(COTE_DIVOIRE, IRELAND, ITALY, MEXICO, INDIA, NIGER,
-                                                     EQUATORIAL_GUINEA, GUYANA, NIGERIA)));
-        // blue yellow
-        similarFlags.add(new HashSet<>(Arrays.asList(PALAU, KAZAKHSTAN, SAINT_LUCIA)));
+        // light-blue-yellow
+        similarFlags.add(new HashSet<>(Arrays.asList(PALAU, KAZAKHSTAN, SAINT_LUCIA, MICRONESIA)));
+        // white with stuff in middle... plus vatican, couldn't find anything better
+        similarFlags.add(new HashSet<>(Arrays.asList(CYPRUS, JAPAN, SOUTH_KOREA, VATICAN_CITY)));
+        // blue-red with stuff
+        similarFlags.add(new HashSet<>(Arrays.asList(LIECHTENSTEIN, HAITI, REPUBLIC_OF_CHINA, SAMOA, LAOS)));
+        // three rows with stuff in middle
+        similarFlags.add(new HashSet<>(Arrays.asList(LIBYA, AZERBAIJAN, UZBEKISTAN, ETHIOPIA, BOLIVIA,
+                                                     LESOTHO)));
+        // three cols, blue-yellow, with stuff in middle
+        similarFlags.add(new HashSet<>(Arrays.asList(BARBADOS, AFGHANISTAN, ANDORRA, MOLDOVA, CHAD, ROMANIA)));
+        // green-red white #1
+        similarFlags.add(new HashSet<>(Arrays.asList(COTE_DIVOIRE, IRELAND, ITALY, MEXICO, INDIA, NIGER, NIGERIA)));
+        // green-red white #2
+        similarFlags.add(new HashSet<>(Arrays.asList(MADAGASCAR, OMAN, BULGARIA, HUNGARY, IRAN, TAJIKISTAN)));
+        // red with stuff in middle
+        similarFlags.add(new HashSet<>(Arrays.asList(ALBANIA, MONTENEGRO, KYRGYZSTAN, MOROCCO)));
+        // left triangle
+        similarFlags.add(new HashSet<>(Arrays.asList(EAST_TIMOR, SAO_TOME_PRINCIPE, SUDAN, PHILIPPINES,
+                                                     MOZAMBIQUE, BAHAMAS, DJIBOUTI, GUYANA, COMOROS,
+                                                     ZIMBABWE, CZECH_REPUBLIC, EQUATORIAL_GUINEA)));
+        // split with stuff
+        similarFlags.add(new HashSet<>(Arrays.asList(SAN_MARINO, VATICAN_CITY, ALGERIA, ANGOLA)));
+
+        similarFlags.add(new HashSet<>(Arrays.asList(SIERRA_LEONE, UZBEKISTAN, GABON, RWANDA)));
+        similarFlags.add(new HashSet<>(Arrays.asList(RWANDA, GABON, UKRAINE, SAINT_VINCENT_THE_GRENADINES)));
+        similarFlags.add(new HashSet<>(Arrays.asList(GERMANY, BELGIUM, SPAIN, UGANDA)));
+        similarFlags.add(new HashSet<>(Arrays.asList(COLOMBIA, VENEZUELA, ECUADOR, MAURITIUS, ARMENIA)));
         similarFlags.add(new HashSet<>(Arrays.asList(BELARUS, PORTUGAL, BRAZIL, BURUNDI, SOUTH_KOREA)));
         similarFlags.add(new HashSet<>(Arrays.asList(LITHUANIA, MYANMAR, BURKINA_FASO, MOROCCO, SOMALIA,
                                                      SURINAME, VIETNAM)));
-        similarFlags.add(new HashSet<>(Arrays.asList(CZECH_REPUBLIC, PHILIPPINES, REPUBLIC_OF_CHINA, SAMOA)));
-        similarFlags.add(new HashSet<>(Arrays.asList(SIERRA_LEONE, LESOTHO, CYPRUS)));
-        similarFlags.add(new HashSet<>(Arrays.asList(COLOMBIA, VENEZUELA, ECUADOR, MAURITIUS, ARMENIA)));
-        similarFlags.add(new HashSet<>(Arrays.asList(RWANDA, GABON, UKRAINE, SAINT_VINCENT_THE_GRENADINES)));
-        similarFlags.add(new HashSet<>(Arrays.asList(LIECHTENSTEIN, HAITI)));
-        similarFlags.add(new HashSet<>(Arrays.asList(LIBYA, AZERBAIJAN, UZBEKISTAN)));
-        similarFlags.add(new HashSet<>(Arrays.asList(BAHAMAS, BARBADOS)));
-        similarFlags.add(new HashSet<>(Arrays.asList(SAN_MARINO, VATICAN_CITY)));
-        similarFlags.add(new HashSet<>(Arrays.asList(ETHIOPIA, BOLIVIA)));
-        similarFlags.add(new HashSet<>(Arrays.asList(MADAGASCAR, OMAN, BULGARIA)));
-        similarFlags.add(new HashSet<>(Arrays.asList(IRAN, TAJIKISTAN, HUNGARY, AFGHANISTAN)));
-        similarFlags.add(new HashSet<>(Arrays.asList(ALBANIA, MONTENEGRO)));
-        similarFlags.add(new HashSet<>(Arrays.asList(GERMANY, BELGIUM, SPAIN, UGANDA)));
     }
 
     private static FlagQuizBuilder instance;
@@ -125,7 +135,6 @@ public class FlagQuizBuilder {
      * @return flag
      * @throws NothingToQuizException
      */
-    // TODO add difficulty
     public Flag nextUnasked() throws NothingToQuizException {
         if (unasked.isEmpty()) {
             throw new NothingToQuizException();

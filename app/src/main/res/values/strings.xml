@@ -49,7 +49,7 @@
     <string name="chile">Chile</string>
     <string name="colombia">Colombia</string>
     <string name="comoros">Comoros</string>
-    <string name="cook_islands">Cook Islands</string>
+    <!--<string name="cook_islands">Cook Islands</string>-->
     <string name="costa_rica">Costa Rica</string>
     <string name="cote_divoire">Cote d\'Ivoire</string>
     <string name="croatia">Croatia</string>
@@ -139,7 +139,7 @@
     <string name="nicaragua">Nicaragua</string>
     <string name="niger">Niger</string>
     <string name="nigeria">Nigeria</string>
-    <string name="niue">Niue</string>
+    <!--<string name="niue">Niue</string>-->
     <string name="north_korea">North Korea</string>
     <string name="norway">Norway</string>
     <string name="oman">Oman</string>
@@ -177,7 +177,7 @@
     <string name="somalia">Somalia</string>
     <string name="south_africa">South Africa</string>
     <string name="south_korea">South Korea</string>
-    <string name="south_sudan">South Sudan</string>
+    <!--<string name="south_sudan">South Sudan</string>-->
     <string name="spain">Spain</string>
     <string name="sri_lanka">Sri Lanka</string>
     <string name="sudan">Sudan</string>
@@ -213,7 +213,6 @@
     <string name="zimbabwe">Zimbabwe</string>
 
     <!-- Scoring Strings -->
-    <string name="empty" />
     <string name="you_scored">You scored</string>
     <string name="you_scored_record">Wohoooo, a new record!</string>
     <string name="score">%d points</string>

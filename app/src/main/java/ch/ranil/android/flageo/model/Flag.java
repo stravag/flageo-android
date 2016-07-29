@@ -57,7 +57,7 @@ public enum Flag implements Quizable {
     DJIBOUTI(R.drawable.dj, R.string.djibouti, 23200),
     DOMINICA(R.drawable.dm, R.string.dominica, 751),
     DOMINICAN_REPUBLIC(R.drawable.dom, R.string.dominican_republic, 48671),
-    //EAST_TIMOR(R.drawable.tp, R.string.east_timor, 14874),
+    EAST_TIMOR(R.drawable.tl, R.string.east_timor, 14874, "Timor-Leste"),
     ECUADOR(R.drawable.ec, R.string.ecuador, 283561),
     EGYPT(R.drawable.eg, R.string.egypt, 980869),
     EL_SALVADOR(R.drawable.sv, R.string.el_salvador, 21041),

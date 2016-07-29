@@ -42,7 +42,10 @@ public class GeocodingTest extends ActivityTestCase {
                 try {
                     address = geocoder.getFromLocationName(flag.getMapName(context).get() + " country", 1);
                     address = geocoder.getFromLocation(address.get(0).getLatitude(), address.get(0).getLongitude(), 1);
-                    Assert.assertEquals(flag.getMapName(context).get(), address.get(0).getCountryName());
+
+                    Assert.assertEquals(address.get(0).toString(),
+                                        flag.getMapName(context).get(),
+                                        address.get(0).getCountryName());
                 } catch (IndexOutOfBoundsException e) {
                     // this testing method cannot deal with cyprus, tested it manually
                     if (flag != Flag.CYPRUS) {
