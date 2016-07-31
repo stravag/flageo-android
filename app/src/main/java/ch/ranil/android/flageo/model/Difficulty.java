@@ -7,7 +7,7 @@ public enum Difficulty implements Quizable {
     EASY(R.string.easy, 0, -1000, 1),
     MEDIUM(R.string.medium, 1, -1333, 3),
     HARD(R.string.hard, 2, -1666, 5),
-    VERY_HARD(R.string.very_hard, 3, -2000, -1);
+    VERY_HARD(R.string.very_hard, 3, -2000, Integer.MAX_VALUE);
 
     private int translation;
     private int similars;
