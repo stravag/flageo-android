@@ -2,6 +2,7 @@ package ch.ranil.android.flageo.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import ch.ranil.android.flageo.R;
 import ch.ranil.android.flageo.model.Difficulty;
@@ -12,6 +13,7 @@ import ch.ranil.android.flageo.model.Mode;
  */
 public class FlageoStorage {
 
+    private static final String TAG = "FlageoStorage";
     private static final String KEY_RECORD_ = "KEY_RECORD_";
 
     private static SharedPreferences getPrefs(Context context) {
@@ -32,8 +34,25 @@ public class FlageoStorage {
     }
 
     public static boolean isDifficultyActive(Difficulty difficulty, Context context) {
+
+        switch (difficulty) {
+            case EASY:
+                return true;
+            case MEDIUM:
+                difficulty = Difficulty.EASY;
+                break;
+            case HARD:
+                difficulty = Difficulty.MEDIUM;
+                break;
+            case VERY_HARD:
+                difficulty = Difficulty.HARD;
+                break;
+        }
+
         for (Mode mode : Mode.values()) {
-            if (getRecord(mode, difficulty, context) == 0) {
+            int record = getRecord(mode, difficulty, context);
+            Log.d(TAG, mode.name() + "/" + difficulty.name() + "/" + record);
+            if (record == 0) {
                 return false;
             }
         }

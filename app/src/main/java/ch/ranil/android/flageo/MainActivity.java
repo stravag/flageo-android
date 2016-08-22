@@ -65,7 +65,7 @@ class PagerAdapter extends FragmentPagerAdapter {
                 active++;
             }
         }
-        return active == 0 ? 1 : active;
+        return active;
     }
 
     @Override

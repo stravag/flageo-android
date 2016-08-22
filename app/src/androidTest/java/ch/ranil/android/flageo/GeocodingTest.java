@@ -5,7 +5,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.ActivityTestCase;
 
 import junit.framework.Assert;
 
@@ -20,7 +19,7 @@ import java.util.Locale;
 import ch.ranil.android.flageo.model.Flag;
 
 @RunWith(AndroidJUnit4.class)
-public class GeocodingTest extends ActivityTestCase {
+public class GeocodingTest {
 
     private Context context;
     private Geocoder geocoder;
