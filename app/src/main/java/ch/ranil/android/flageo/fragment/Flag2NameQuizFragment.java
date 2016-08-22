@@ -34,7 +34,7 @@ public class Flag2NameQuizFragment extends Fragment {
     ImageView flagAsked;
 
     private int numberOfChoices = 4;
-    private Difficulty difficulty = Difficulty.EASY;
+    private Difficulty difficulty;
     private Quiz<Flag> quiz;
     private QuizListener quizListener;
     private Button[] flagButtons;
