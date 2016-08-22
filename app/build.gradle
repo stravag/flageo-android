@@ -2,14 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.github.triplet.play'
 
 android {
-    signingConfigs {
-        release {
-            storeFile file(RELEASE_STORE_FILE)
-            storePassword RELEASE_STORE_PASSWORD
-            keyAlias RELEASE_KEY_ALIAS
-            keyPassword RELEASE_KEY_PASSWORD
-        }
-    }
     compileSdkVersion 24
     buildToolsVersion "24.0.0"
     defaultConfig {
@@ -19,6 +11,14 @@ android {
         versionCode 12
         versionName "1.2.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    signingConfigs {
+        release {
+            storeFile hasProperty('RELEASE_STORE_FILE') ? file(RELEASE_STORE_FILE) : file('travis')
+            storePassword hasProperty('RELEASE_STORE_PASSWORD') ? RELEASE_STORE_PASSWORD : 'travis'
+            keyAlias hasProperty('RELEASE_KEY_ALIAS') ? RELEASE_KEY_ALIAS : 'travis'
+            keyPassword hasProperty('RELEASE_KEY_PASSWORD') ? RELEASE_KEY_PASSWORD : 'travis'
+        }
     }
     buildTypes {
         release {
@@ -37,7 +37,7 @@ android {
 
 play {
     track = 'alpha'
-    jsonFile = file(PLAY_PUBLISH_FILE)
+    jsonFile = hasProperty('PLAY_PUBLISH_FILE') ? file(PLAY_PUBLISH_FILE) : file('travis')
 }
 
 dependencies {
