@@ -9,14 +9,15 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.ranil.android.flageo.R;
-import ch.ranil.android.flageo.cache.BitmapCache;
 import ch.ranil.android.flageo.model.Difficulty;
 import ch.ranil.android.flageo.model.Flag;
-import ch.ranil.android.flageo.model.Quiz;
 import ch.ranil.android.flageo.model.FlagQuizBuilder;
+import ch.ranil.android.flageo.model.Quiz;
 import ch.ranil.android.flageo.utils.UiUtils;
 
 /**
@@ -89,8 +90,11 @@ public class Name2FlagQuizFragment extends Fragment {
         flagAsked.setText(quiz.getAnswer().getTranslation());
 
         for (int i = 0; i < flagButtons.length; i++) {
-            Flag f = quiz.getOption(i);
-            BitmapCache.getInstance().loadBitmap(f.getDrawable(), flagButtons[i]);
+            Flag flag = quiz.getOption(i);
+            Glide.with(getContext())
+                    .load(flag.getDrawable())
+                    .crossFade()
+                    .into(flagButtons[i]);
             flagButtons[i].setOnClickListener(flagButtonClickListener);
         }
 

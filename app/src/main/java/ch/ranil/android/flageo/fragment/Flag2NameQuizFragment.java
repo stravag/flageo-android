@@ -9,14 +9,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import ch.ranil.android.flageo.R;
-import ch.ranil.android.flageo.cache.BitmapCache;
 import ch.ranil.android.flageo.model.Difficulty;
 import ch.ranil.android.flageo.model.Flag;
-import ch.ranil.android.flageo.model.Quiz;
 import ch.ranil.android.flageo.model.FlagQuizBuilder;
+import ch.ranil.android.flageo.model.Quiz;
 import ch.ranil.android.flageo.utils.UiUtils;
 
 /**
@@ -86,7 +87,10 @@ public class Flag2NameQuizFragment extends Fragment {
         flagButtons[2] = (Button) fragmentLayout.findViewById(R.id.btn_flag3);
         flagButtons[3] = (Button) fragmentLayout.findViewById(R.id.btn_flag4);
 
-        BitmapCache.getInstance().loadBitmap(quiz.getAnswer().getDrawable(), flagAsked);
+        Glide.with(getContext())
+                .load(quiz.getAnswer().getDrawable())
+                .crossFade()
+                .into(flagAsked);
 
         for (int i = 0; i < flagButtons.length; i++) {
             Flag f = quiz.getOption(i);

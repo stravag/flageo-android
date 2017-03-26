@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -29,7 +30,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.ranil.android.flageo.R;
-import ch.ranil.android.flageo.cache.BitmapCache;
 import ch.ranil.android.flageo.model.Difficulty;
 import ch.ranil.android.flageo.model.Flag;
 import ch.ranil.android.flageo.model.FlagQuizBuilder;
@@ -163,7 +163,10 @@ public class Flag2MapQuizFragment extends Fragment {
         flagView.setVisibility(View.VISIBLE);
         flagTextView.setVisibility(View.INVISIBLE);
 
-        BitmapCache.getInstance().loadBitmap(flag.getDrawable(), flagView);
+        Glide.with(getContext())
+                .load(flag.getDrawable())
+                .crossFade()
+                .into(flagView);
         flagTextView.setText(flag.getTranslation());
     }
 
@@ -172,6 +175,7 @@ public class Flag2MapQuizFragment extends Fragment {
      *
      * @param countryName selected country
      */
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     private void processAnswer(String countryName) {
         Log.d(TAG, "Selected country: " + countryName);
         boolean correct = flag.getMapName(getActivity()).get().equals(countryName);
