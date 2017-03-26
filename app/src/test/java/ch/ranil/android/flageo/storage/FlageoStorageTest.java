@@ -21,11 +21,8 @@ public class FlageoStorageTest {
                 endsWith("FLAG2MAP")));
         assertThat(FlageoStorage.buildRecordKey(Mode.FLAG2MAP, Difficulty.MEDIUM), allOf(
                 startsWith(RECORD_KEY_PREFIX),
-                endsWith("FLAG2MAPMEDIUM")));
-        assertThat(FlageoStorage.buildRecordKey(Mode.FLAG2MAP, Difficulty.HARD), allOf(
-                startsWith(RECORD_KEY_PREFIX),
                 endsWith("FLAG2MAPHARD")));
-        assertThat(FlageoStorage.buildRecordKey(Mode.FLAG2MAP, Difficulty.VERY_HARD), allOf(
+        assertThat(FlageoStorage.buildRecordKey(Mode.FLAG2MAP, Difficulty.HARD), allOf(
                 startsWith(RECORD_KEY_PREFIX),
                 endsWith("FLAG2MAPVERY_HARD")));
 
@@ -34,11 +31,8 @@ public class FlageoStorageTest {
                 endsWith("FLAG2NAME")));
         assertThat(FlageoStorage.buildRecordKey(Mode.FLAG2NAME, Difficulty.MEDIUM), allOf(
                 startsWith(RECORD_KEY_PREFIX),
-                endsWith("FLAG2NAMEMEDIUM")));
-        assertThat(FlageoStorage.buildRecordKey(Mode.FLAG2NAME, Difficulty.HARD), allOf(
-                startsWith(RECORD_KEY_PREFIX),
                 endsWith("FLAG2NAMEHARD")));
-        assertThat(FlageoStorage.buildRecordKey(Mode.FLAG2NAME, Difficulty.VERY_HARD), allOf(
+        assertThat(FlageoStorage.buildRecordKey(Mode.FLAG2NAME, Difficulty.HARD), allOf(
                 startsWith(RECORD_KEY_PREFIX),
                 endsWith("FLAG2NAMEVERY_HARD")));
 
@@ -47,11 +41,8 @@ public class FlageoStorageTest {
                 endsWith("NAME2FLAG")));
         assertThat(FlageoStorage.buildRecordKey(Mode.NAME2FLAG, Difficulty.MEDIUM), allOf(
                 startsWith(RECORD_KEY_PREFIX),
-                endsWith("NAME2FLAGMEDIUM")));
-        assertThat(FlageoStorage.buildRecordKey(Mode.NAME2FLAG, Difficulty.HARD), allOf(
-                startsWith(RECORD_KEY_PREFIX),
                 endsWith("NAME2FLAGHARD")));
-        assertThat(FlageoStorage.buildRecordKey(Mode.NAME2FLAG, Difficulty.VERY_HARD), allOf(
+        assertThat(FlageoStorage.buildRecordKey(Mode.NAME2FLAG, Difficulty.HARD), allOf(
                 startsWith(RECORD_KEY_PREFIX),
                 endsWith("NAME2FLAGVERY_HARD")));
 

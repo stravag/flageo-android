@@ -13,7 +13,7 @@ import static ch.ranil.android.flageo.model.Flag.*;
 
 public class FlagQuizBuilder {
 
-    protected static List<Set<Flag>> similarFlags;
+    private static List<Set<Flag>> similarFlags;
     static {
         similarFlags = new ArrayList<>();
         // arab style
@@ -133,7 +133,7 @@ public class FlagQuizBuilder {
      * Gets a random unasked flag.
      *
      * @return flag
-     * @throws NothingToQuizException
+     * @throws NothingToQuizException e
      */
     public Flag nextUnasked() throws NothingToQuizException {
         if (unasked.isEmpty()) {
@@ -152,7 +152,7 @@ public class FlagQuizBuilder {
      *
      * @param size number of options
      * @return quiz
-     * @throws NothingToQuizException
+     * @throws NothingToQuizException e
      */
     public Quiz<Flag> buildQuiz(int size, Difficulty difficulty) throws NothingToQuizException {
 
@@ -189,7 +189,7 @@ public class FlagQuizBuilder {
         if (!similarFlags.isEmpty()) {
             Random r = new Random();
             List<Flag> tmp = new ArrayList<>(similarFlags);
-            for (int i = index; i <= difficulty.getSimilars() && i < options.length && !tmp.isEmpty(); i++) {
+            for (int i = index; i <= numberOfSimilar(difficulty) && i < options.length && !tmp.isEmpty(); i++) {
                 int rand = r.nextInt(tmp.size());
                 options[i] = tmp.remove(rand);
                 filled++;
@@ -198,7 +198,17 @@ public class FlagQuizBuilder {
         return filled;
     }
 
-    protected static Set<Flag> getSimilarFlags(Flag flag) {
+    static int numberOfSimilar(Difficulty difficulty) {
+        Random r = new Random();
+        switch (difficulty) {
+            case EASY: return 0;
+            case MEDIUM: return r.nextInt(3) + 1;
+            case HARD: return 3;
+        }
+        throw new IllegalArgumentException();
+    }
+
+    static Set<Flag> getSimilarFlags(Flag flag) {
         Set<Flag> similar = new HashSet<>();
         for (Set<Flag> set : similarFlags) {
             if (set.contains(flag)) {

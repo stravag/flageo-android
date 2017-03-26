@@ -227,6 +227,5 @@
     <!-- Difficulties -->
     <string name="easy">Normal</string>
     <string name="medium">Challenge</string>
-    <string name="hard">Nerd</string>
-    <string name="very_hard">Sheldon Cooper</string>
+    <string name="hard">Sheldon Cooper</string>
 </resources>

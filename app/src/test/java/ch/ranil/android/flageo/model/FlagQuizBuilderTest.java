@@ -1,13 +1,17 @@
 package ch.ranil.android.flageo.model;
 
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import static org.hamcrest.core.AnyOf.anyOf;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class FlagQuizBuilderTest {
 
@@ -23,7 +27,7 @@ public class FlagQuizBuilderTest {
         Set<Flag> flagSet = new HashSet<>();
         flagSet.addAll(Arrays.asList(quiz.getOptions()));
 
-        Assert.assertEquals(4, flagSet.size());
+        assertEquals(4, flagSet.size());
     }
 
     @Test(expected = FlagQuizBuilder.NothingToQuizException.class)
@@ -45,8 +49,20 @@ public class FlagQuizBuilderTest {
 
         for (Flag flag : Flag.values()) {
             Set<Flag> similarFlags = FlagQuizBuilder.getSimilarFlags(flag);
-            Assert.assertTrue("Not enough (" + similarFlags.size() + ") similar flag found for: " + flag,
+            assertTrue("Not enough (" + similarFlags.size() + ") similar flag found for: " + flag,
                               3 <= similarFlags.size());
         }
+    }
+
+    @Test
+    public void similarCount() {
+
+        assertThat(FlagQuizBuilder.numberOfSimilar(Difficulty.EASY), is(0));
+        for (int i = 0; i < 100; i++) {
+            assertThat("attempt #" + i,
+                    FlagQuizBuilder.numberOfSimilar(Difficulty.MEDIUM),
+                    anyOf(is(1), is(2), is(3)));
+        }
+        assertThat(FlagQuizBuilder.numberOfSimilar(Difficulty.HARD), is(3));
     }
 }
