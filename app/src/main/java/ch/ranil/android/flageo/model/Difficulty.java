@@ -4,29 +4,29 @@ import ch.ranil.android.flageo.R;
 
 public enum Difficulty implements Quizable {
 
-    EASY(R.string.easy, 0, -1000, 1),
-    MEDIUM(R.string.medium, 1, -1333, 3),
-    HARD(R.string.hard, 2, -1666, 5),
-    VERY_HARD(R.string.very_hard, 3, -2000, Integer.MAX_VALUE);
+    EASY(R.string.easy, -1000, 1, ""),
+    // previously known as HARD
+    MEDIUM(R.string.medium, -1666, 5, "HARD"),
+    // previously known as VERY_HARD
+    HARD(R.string.hard, -2000, Integer.MAX_VALUE, "VERY_HARD");
 
-    private int translation;
-    private int similars;
-    private int penalty;
-    private int maxwrong;
+    private final int translation;
+    private final int penalty;
+    private final int maxwrong;
 
-    Difficulty(int translation, int similars, int penalty, int maxwrong) {
+    // don't change my recordName
+    // i'm needed to preserve old records
+    private final String recordName;
+
+    Difficulty(int translation, int penalty, int maxwrong, String recordName) {
         this.translation = translation;
-        this.similars = similars;
         this.penalty = penalty;
         this.maxwrong = maxwrong;
+        this.recordName = recordName;
     }
 
     public int getTranslation() {
         return translation;
-    }
-
-    public int getSimilars() {
-        return similars;
     }
 
     public int getPenalty() {
@@ -37,12 +37,7 @@ public enum Difficulty implements Quizable {
         return maxwrong;
     }
 
-    @Override
-    public String toString() {
-        if (this == EASY) {
-            return ""; // ugly but ensures backwards compatibility for now
-        } else {
-            return super.toString();
-        }
+    public String getRecordName() {
+        return recordName;
     }
 }

@@ -14,23 +14,31 @@ import ch.ranil.android.flageo.model.Mode;
 public class FlageoStorage {
 
     private static final String TAG = "FlageoStorage";
-    private static final String KEY_RECORD_ = "KEY_RECORD_";
+    static final String RECORD_KEY_PREFIX = "KEY_RECORD_";
 
     private static SharedPreferences getPrefs(Context context) {
         return context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE);
     }
 
     public static int getRecord(Mode mode, Difficulty difficulty, Context context) {
-        return getPrefs(context).getInt(KEY_RECORD_ + mode + difficulty.toString(), 0);
+        return getPrefs(context)
+                .getInt(buildRecordKey(mode, difficulty), 0);
     }
 
     public static int setRecord(int record, Mode mode, Difficulty difficulty, Context context) {
         int currentRecord = getRecord(mode, difficulty, context);
         if (currentRecord < record) {
-            getPrefs(context).edit().putInt(KEY_RECORD_ + mode + difficulty.toString(), record).commit();
+            getPrefs(context)
+                    .edit()
+                    .putInt(buildRecordKey(mode, difficulty), record)
+                    .apply();
             return record;
         }
         return currentRecord;
+    }
+
+    static String buildRecordKey(Mode mode, Difficulty difficulty) {
+        return RECORD_KEY_PREFIX + mode + difficulty.getRecordName();
     }
 
     public static boolean isDifficultyActive(Difficulty difficulty, Context context) {
@@ -43,9 +51,6 @@ public class FlageoStorage {
                 break;
             case HARD:
                 difficulty = Difficulty.MEDIUM;
-                break;
-            case VERY_HARD:
-                difficulty = Difficulty.HARD;
                 break;
         }
 

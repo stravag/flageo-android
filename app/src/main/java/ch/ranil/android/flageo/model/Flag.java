@@ -51,7 +51,7 @@ public enum Flag implements Quizable {
     CROATIA(R.drawable.hr, R.string.croatia, 56538),
     CUBA(R.drawable.cu, R.string.cuba, 110861),
     CYPRUS(R.drawable.cy, R.string.cyprus, 9251),
-    CZECH_REPUBLIC(R.drawable.cz, R.string.czech_republic, 78866),
+    CZECH_REPUBLIC(R.drawable.cz, R.string.czech_republic, 78866, "Czechia"),
     DEMOCRATIC_REPUBLIC_OF_THE_CONGO(R.drawable.cd, R.string.democratic_republic_of_the_congo, 2344860),
     DENMARK(R.drawable.dk, R.string.denmark, 43094),
     DJIBOUTI(R.drawable.dj, R.string.djibouti, 23200),
@@ -215,6 +215,7 @@ public enum Flag implements Quizable {
     private int drawable;
     private int translation;
     private long area = REFERENCE_AREA;
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private Optional<String> mapName;
 
     Flag(int drawable, int translation, long area) {
